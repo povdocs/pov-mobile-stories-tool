@@ -1,0 +1,16 @@
+# ignore all files and folders
+*
+
+# track this file
+!.gitignore
+!.jshintrc
+!*.md
+!*.json
+!*.html
+!*.js
+!development
+!development/*
+!production
+!production/*
+
+*.DS_Store
