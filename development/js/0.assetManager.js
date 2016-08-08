@@ -86,7 +86,10 @@ AssetManager.prototype.downloadImage = function(path, downloadCallback){
   var image      = new Image();
   var parentThis = this;
   if(parentThis.DEBUG) console.log("IMAGE DOWNLOADING: ", path);
-  // image.addEventListener("progress", function(e){parentThis.updateProgress(path, e)});
+
+  image.addEventListener("progress", function (event) {
+    parentThis.progressCount(path, event.loaded, event.total);
+  });
   image.addEventListener("load", function() {
     parentThis.successCount += 1;
     if(parentThis.DEBUG) console.log("IMAGE DOWNLOADED: ", path);
@@ -102,16 +105,23 @@ AssetManager.prototype.downloadAudio = function(path, downloadCallback){
   var audio      = new Audio();
   var parentThis = this;
   if(parentThis.DEBUG) console.log("AUDIO DOWNLOADING: ", path);
-  // audio.addEventListener("progress", function(e){parentThis.updateProgress(path, e)});
+  audio.addEventListener("progress", function (event) {
+    if(parentThis.DEBUG) console.log('AUDIO progress: ', path, event);
+    parentThis.progressCount(path, event.loaded, event.total);
+  });
   audio.addEventListener("load", function() {
     if(parentThis.DEBUG) console.log('AUDIO DOWNLOADED: ', path);
     parentThis.successCount += 1;
     downloadCallback(path, audio);
   }, false);
   audio.addEventListener("error", function() {
+    if(parentThis.DEBUG) console.error('AUDIO: ', path);
     parentThis.errorCount += 1;
   }, false);
   audio.src = path;
+  audio.muted = true;
+  audio.volume = 0;
+  audio.autoplay = false;
 }
 
 AssetManager.prototype.downloadVideo = function(path, downloadCallback){
@@ -122,7 +132,10 @@ AssetManager.prototype.downloadVideo = function(path, downloadCallback){
   if(parentThis.DEBUG) console.log("VIDEO DOWNLOADING: ", path);
 
 	xhr.responseType = 'blob';
-	// xhr.addEventListener("progress", function(e){parentThis.updateProgress(path, e)});
+
+  xhr.addEventListener("progress", function (event) {
+    parentThis.progressCount(path, event.loaded, event.total);
+  });
 	xhr.addEventListener("load", function() {
     if(parentThis.DEBUG) console.log("VIDEO DOWNLOADED: ", path);
     parentThis.successCount += 1;
@@ -133,9 +146,6 @@ AssetManager.prototype.downloadVideo = function(path, downloadCallback){
   xhr.addEventListener("error", function() {
     parentThis.errorCount += 1;
   }, false);
-  xhr.addEventListener("progress", function (event) {
-    parentThis.progressCount(path, event.loaded, event.total);
-  });
 	xhr.send();
 }
 
@@ -154,7 +164,7 @@ AssetManager.prototype.progress = function() {
     }
   }
 
-  return (progress / total) * 100;
+  return Math.round((progress / total) * 100);
 }
 
 AssetManager.prototype.getAsset = function(path) {

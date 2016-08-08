@@ -1,3 +1,8 @@
+:root{
+  font-size: 14px;
+  line-height: 1.5rem;
+  font-family: Helvetica,Arial,Sans-Serif;
+}
 *,*:before,*:after{
   box-sizing: border-box;
 }
@@ -6,6 +11,8 @@ html,body{
   margin: 0;
   width: 100%;
   height: 100%;
+  touch-action: none;
+  overflow: hidden;
 }
 
 body{
@@ -14,12 +21,14 @@ body{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
+  color: #000;
 }
 main{
   width: 100%;
   height: 100%;
   max-width: 480px;
-  max-height: 780px;
+  max-height: 853px;
   margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 0 5px rgba(0,0,0, 0.4);
