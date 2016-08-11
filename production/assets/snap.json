@@ -1,4 +1,5 @@
-[{"cover":{"image":"","video":"assets/media/ts1.mp4","audio":""},"content":{"type":"video","src":"assets/media/bs1.mp4"}}
+[{"cover":{"image":"assets/media/title1.png","video":"","audio":"assets/media/HangingOn.mp3"}}
+,{"cover":{"image":"","video":"assets/media/ts1.mp4","audio":""},"content":{"type":"video","src":"assets/media/bs1.mp4"}}
 ,{"cover":{"image":"","video":"assets/media/ts2.mp4","audio":""},"content":{"type":"video","src":"assets/media/bs2.mp4"}}
 ,{"cover":{"image":"","video":"assets/media/ts3.mp4","audio":""},"content":{"type":"video","src":"assets/media/bs3.mp4"}}
 ,{"cover":{"image":"","video":"assets/media/ts4.mp4","audio":""},"content":{"type":"video","src":"assets/media/bs4.mp4"}}

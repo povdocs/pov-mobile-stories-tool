@@ -38,7 +38,9 @@ section:nth-child(even){
   }
   &-content{
     height: 100%;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     &:not(.video){
       padding: 1rem;
     }

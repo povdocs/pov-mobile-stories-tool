@@ -150,7 +150,7 @@ AssetManager.prototype.downloadVideo = function(path, downloadCallback){
 }
 
 AssetManager.prototype.isDone = function() {
-  return (this.downloadQueue.length == this.successCount + this.errorCount);
+  return (this.progress()<100) ? false : true;
 }
 
 AssetManager.prototype.progress = function() {
@@ -168,7 +168,8 @@ AssetManager.prototype.progress = function() {
 }
 
 AssetManager.prototype.getAsset = function(path) {
-  return this.cache[path];
+  if(!this.cache.hasOwnProperty(path)) return path;
+  else return this.cache[path];
 }
 
 AssetManager.prototype.updateProgress = function(path, oEvent) {

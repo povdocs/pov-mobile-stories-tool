@@ -5,30 +5,41 @@ app.snap = {
   },
 
   create: function (i, snap) {
-    var section = $('<section id="snap'+i+'" class="snap"></section>');
-    var cover   = $('<div class="snap-cover"></div>');
-    var content = $('<div class="snap-content"></div>');
-    // add cover content
-    if(snap.cover.image){
-      cover.append('<img class="snap-cover-image" data-asset-id="'+app.addAssetManager('image', snap.cover.image)+'" src="" alt="" width="100%" height="">');
+    var section = '';
+    if(i==0){
+      section = $('<section id="snap'+i+'" class="intro"></section>');
+    }else{
+      section = $('<section id="snap'+i+'" class="snap"></section>');
     }
+
+    // cover
+    var cover = $('<div class="snap-cover"></div>');
+    // add cover content
     if(snap.cover.video){
       cover.append('<video class="snap-cover-video" data-asset-id="'+app.addAssetManager('video', snap.cover.video)+'" loop muted><source src="" type="video/mp4"></video>');
+    }else{
+      if(snap.cover.image){
+        cover.append('<img class="snap-cover-image" data-asset-id="'+app.addAssetManager('image', snap.cover.image)+'" src="" alt="" width="100%" height="">');
+      }
+      if(snap.cover.audio){
+        cover.append('<audio class="snap-cover-audio" loop muted><source src="'+snap.cover.audio+'" type="audio/mp3"></audio>');
+      }
     }
-    if(snap.cover.audio){
-      cover.append('<audio class="snap-cover-audio" loop muted><source src="'+snap.cover.audio+'" type="audio/mp3"></audio>');
-    }
-    // add html content to snap
-    if(snap.content.type=='html'){
-      content.html(snap.content.src);
-    }
-    if(snap.content.type=='video'){
-      content.append('<video class="snap-content-video" data-asset-id="'+app.addAssetManager('video', snap.content.src)+'" controls><source src="" type="video/mp4"></video>');;
-    }
-    content.addClass(snap.content.type);
-
     cover.appendTo(section);
-    content.appendTo(section);
+
+    // content
+    if(i>0){
+      var content = $('<div class="snap-content"></div>');
+      // add html content to snap
+      if(snap.content.type=='html'){
+        content.html(snap.content.src);
+      }
+      if(snap.content.type=='video'){
+        content.append('<video class="snap-content-video" data-asset-id="'+app.addAssetManager('video', snap.content.src)+'" controls><source src="" type="video/mp4"></video>');;
+      }
+      content.addClass(snap.content.type);
+      content.appendTo(section);
+    }
     section.appendTo('main');
   },
 
@@ -43,14 +54,14 @@ app.snap = {
   },
 
   getCurrent: function () {
-    if(app.currentSnap<1) app.currentSnap = 1;
+    if(app.currentSnap<0) app.currentSnap = 0;
     return app.snap.get(app.currentSnap);
   },
 
   get: function (id) {
     // change the index and return the snap object
-    if(id<1 || id>app.snaps.length) return null;
-    return app.snaps[id-1];
+    if(id<0 || id>app.snaps.length) return null;
+    return app.snaps[id];
   },
 
   next: function () {

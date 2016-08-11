@@ -8,7 +8,7 @@ var app = {
   video:         null,
   audio:         null,
   currentScroll: 0,
-  currentSnap:   1,
+  currentSnap:   0,
   assets:        [],
   allAssets:     [],
   snaps:         [],
@@ -31,8 +31,8 @@ var app = {
 
   readFile: function(){
     $.getJSON(app.snapFile, function(snaps){
-      for (var i = 1, l = snaps.length; i <= l; i++) {
-        app.snap.create(i, snaps[i-1]);
+      for (var i = 0, l = snaps.length; i < l; i++) {
+        app.snap.create(i, snaps[i]);
         app.snap.index(i);
       }
     });
@@ -40,7 +40,8 @@ var app = {
 
   eventListener: function () {
     // start snap story
-    $('#startStory').on('click', function () {
+    $('#snap0,.intro').on('click', function () {
+      if(app.DEBUG) console.log('intro click.');
       if(!app.started){
         app.toggleFullScreen();
         app.started = true;
@@ -48,11 +49,11 @@ var app = {
           var snap = app.snaps[i];
           if(snap.video.length){
             app.playMedia(snap.video, false);
-            app.stopMedia(snap.video);
+            setTimeout(function(){app.stopMedia(snap.video);}, 5000);
           }
           if(snap.audio.length){
             app.playMedia(snap.audio, false);
-            app.stopMedia(snap.audio);
+            setTimeout(function(){app.stopMedia(snap.audio);}, 5000);
           }
         }
       }
@@ -69,6 +70,12 @@ var app = {
       else if(event.keyCode==39) app.snap.next();
       // down key
       else if(event.keyCode==40) app.snap.content.show();
+    }).on('touchstart', function(event){
+      // event.preventDefault();
+    }).on('touchmove', function(event){
+      // event.preventDefault();
+    }).on('touchend', function(event){
+      // event.preventDefault();
     });
   },
 
@@ -94,7 +101,7 @@ var app = {
         clearInterval(progressState);
         document.title = app.title;
       }
-    }, 100);
+    }, 500);
 
     assetManager.constructor(app.allAssets, function(){
       for (var i = 0; i < app.allAssets.length; i++) {
@@ -103,9 +110,9 @@ var app = {
         if(asset.type=='audio' || asset.type=='video'){
           $('[data-asset-id="'+i+'"]').each(function(){
             $(this).get(0).src = src;
-            // $(this).children().get(0).src = src;
+            $(this).children().get(0).src = src;
             // $(this).get(0).src = asset.path;
-            $(this).children().get(0).src = asset.path;
+            // $(this).children().get(0).src = asset.path;
           });
         }
         else if(asset.type=='image'){
@@ -114,8 +121,8 @@ var app = {
         else continue;
         //  if(DEBUG) console.info(i, asset.path, 'downloaded');
       }
-      $('#startStory').show();
-      $('#loading').hide();
+      $('#launcher').hide();
+      app.snap.play(app.snap.getCurrent());
     });
   },
 
