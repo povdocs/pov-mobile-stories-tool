@@ -6,6 +6,9 @@ section:nth-child(odd){
 section:nth-child(even){
   background-color: #fff;
 }
+#video{
+  display: none;
+}
 
 .launcher{
   display: flex;
