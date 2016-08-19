@@ -28,7 +28,7 @@ var
 
 /** MAIN TASKS */
 // Default Tasks
-gulp.task('default', ['clean', 'fonts'], function() {
+gulp.task('serve', ['clean', 'fonts'], function() {
   return gulp.start('htaccess', 'plugins', 'media', 'pages', 'js', 'json', 'sass', 'browserSync', 'watch');
 });
 
