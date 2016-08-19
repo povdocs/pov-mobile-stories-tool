@@ -23,6 +23,13 @@ body{
   align-items: center;
   font-size: 1rem;
   color: #000;
+  @media(min-width: 480px){
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
 }
 main{
   width: 100%;
