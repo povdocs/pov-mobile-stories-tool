@@ -104,24 +104,27 @@ AssetManager.prototype.downloadImage = function(path, downloadCallback){
 AssetManager.prototype.downloadAudio = function(path, downloadCallback){
   var audio      = new Audio();
   var parentThis = this;
+  var xhr        = createCORSRequest('GET', path);
+  
+  if (!xhr) throw new Error('CORS not supported');
   if(parentThis.DEBUG) console.log("AUDIO DOWNLOADING: ", path);
-  audio.addEventListener("progress", function (event) {
-    if(parentThis.DEBUG) console.log('AUDIO progress: ', path, event);
+
+  xhr.responseType = 'blob';
+
+  xhr.addEventListener("progress", function (event) {
     parentThis.progressCount(path, event.loaded, event.total);
   });
-  audio.addEventListener("load", function() {
-    if(parentThis.DEBUG) console.log('AUDIO DOWNLOADED: ', path);
+  xhr.addEventListener("load", function() {
+    if(parentThis.DEBUG) console.log("AUDIO DOWNLOADED: ", path);
     parentThis.successCount += 1;
+    window.URL = window.URL || window.webkitURL;
+    audio = window.URL.createObjectURL(this.response);
     downloadCallback(path, audio);
   }, false);
-  audio.addEventListener("error", function() {
-    if(parentThis.DEBUG) console.error('AUDIO: ', path);
+  xhr.addEventListener("error", function() {
     parentThis.errorCount += 1;
   }, false);
-  audio.src = path;
-  audio.muted = true;
-  audio.volume = 0;
-  audio.autoplay = false;
+  xhr.send();
 }
 
 AssetManager.prototype.downloadVideo = function(path, downloadCallback){

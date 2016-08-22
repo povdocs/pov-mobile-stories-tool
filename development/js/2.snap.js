@@ -1,57 +1,96 @@
 app.snap = {
+
   init: function () {
     app.snap.cover.eventListeners();
     app.snap.content.eventListeners();
   },
 
   create: function (i, snap) {
+    var main = document.getElementById('main');
     var section = '';
+    var obj = {
+      video: null,
+      audio: null,
+      image: null,
+      cover: null,
+      content: null,
+      contentVideo: null
+    };
     if(i==0){
-      section = $('<section id="snap'+i+'" class="intro"></section>');
+      section = document.createElement('section');
+      section.setAttribute('class', 'intro');
     }else{
-      section = $('<section id="snap'+i+'" class="snap"></section>');
+      section = document.createElement('section');
+      section.setAttribute('class', 'snap');
     }
+    section.setAttribute('id', 'snap'+i);
 
     // cover
-    var cover = $('<div class="snap-cover"></div>');
+    var cover = document.createElement('div');
+    cover.setAttribute('class', 'snap-cover');
     // add cover content
     if(snap.cover.video){
-      cover.append('<video class="snap-cover-video" data-asset-id="'+app.addAssetManager('video', snap.cover.video)+'" loop muted><source src="" type="video/mp4"></video>');
+      var video = document.createElement('video');
+      video.setAttribute('webkit-playsinline', true);
+      video.setAttribute('src', snap.cover.video);
+      video.setAttribute('preload', 'metadata');
+      video.setAttribute('loop', true);
+      video.setAttribute('muted', true);
+      video.setAttribute('controls', true);
+      video.setAttribute('class', 'snap-cover-video');
+      cover.appendChild(video);
+      obj.video = video;
     }else{
       if(snap.cover.image){
-        cover.append('<img class="snap-cover-image" data-asset-id="'+app.addAssetManager('image', snap.cover.image)+'" src="" alt="" width="100%" height="">');
+        var image = document.createElement('img');
+        image.setAttribute('src', snap.cover.image);
+        image.setAttribute('alt', '');
+        image.setAttribute('width', '100%');
+        image.setAttribute('height', '');
+        image.setAttribute('class', 'snap-cover-image');
+        cover.appendChild(image);
+        obj.image = image;
       }
       if(snap.cover.audio){
-        cover.append('<audio class="snap-cover-audio" loop muted><source src="'+snap.cover.audio+'" type="audio/mp3"></audio>');
+        var audio = document.createElement('audio');
+        audio.setAttribute('src', snap.cover.audio);
+        audio.setAttribute('preload', 'metadata');
+        audio.setAttribute('loop', true);
+        audio.setAttribute('muted', true);
+        audio.setAttribute('controls', false);
+        audio.setAttribute('class', 'snap-cover-audio');
+        cover.appendChild(audio);
+        obj.audio = audio;
       }
     }
-    cover.appendTo(section);
+    section.appendChild(cover);
+    obj.cover = cover;
 
     // content
     if(i>0){
-      var content = $('<div class="snap-content"></div>');
+      var content = document.createElement('div');
+      content.setAttribute('class', 'snap-content '+snap.content.type);
       // add html content to snap
       if(snap.content.type=='html'){
-        content.html(snap.content.src);
+        content.innerHTML = snap.content.src;
       }
       if(snap.content.type=='video'){
-        // content.append('<video class="snap-content-video" data-asset-id="'+app.addAssetManager('video', snap.content.src)+'" controls><source src="" type="video/mp4"></video>');
-        content.append('<video class="snap-content-video" preload="metadata" controls><source src="'+snap.content.src+'" type="video/mp4"></video>');
+        var video = document.createElement('video');
+        video.setAttribute('webkit-playsinline', true);
+        video.setAttribute('src', snap.content.src);
+        video.setAttribute('preload', 'metadata');
+        video.setAttribute('loop', false);
+        video.setAttribute('muted', false);
+        video.setAttribute('controls', true);
+        video.setAttribute('class', 'snap-content-video');
+        content.appendChild(video);
+        obj.contentVideo = video;
       }
-      content.addClass(snap.content.type);
-      content.appendTo(section);
+      section.appendChild(content);
+      obj.content = content;
     }
-    section.appendTo('main');
-  },
-
-  index: function (i) {
-    var snap = {
-      video: $('#snap'+i+' .snap-cover video'),
-      audio: $('#snap'+i+' .snap-cover audio'),
-      cover: $('#snap'+i+' .snap-cover'),
-      content: $('#snap'+i+' .snap-content')
-    };
-    app.snaps.push(snap);
+    main.appendChild(section);
+    app.snaps.push(obj);
   },
 
   getCurrent: function () {
@@ -102,35 +141,33 @@ app.snap = {
 
   play: function (snap) {
     if(!snap) return false;
-    if(snap.video.length) app.playMedia(snap.video, true);
-    if(snap.audio.length) app.playMedia(snap.audio, true);
+    if(snap.video) app.playMedia(snap.video, true);
+    else if(snap.audio) app.playMedia(snap.audio, true);
   },
 
   stop: function (snap) {
     if(!snap) return false;
-    if(snap.video.length) app.stopMedia(snap.video);
-    if(snap.audio.length) app.stopMedia(snap.audio);
+    if(snap.video) app.stopMedia(snap.video);
+    else if(snap.audio) app.stopMedia(snap.audio);
   },
 
   content: {
     show: function () {
       var snap = app.snap.getCurrent();
-      if(!snap.content.html()) return false;
-      snap.cover.addClass('over');
+      if(!snap.content) return false;
+      $(snap.cover).addClass('over');
       app.snap.stop(snap);
-      if(snap.content.find('.snap-content-video').length){
-        snap.content.find('.snap-content-video').each(function(){
-          $(this).get(0).volume = 1;
-          $(this).prop('muted', false);
-          $(this).get(0).play();
-        });
+      if(snap.contentVideo){
+        snap.contentVideo.volume = 1;
+        snap.contentVideo.muted = false;
+        snap.contentVideo.play();
       }
     },
     stop: function (snap) {
       if(!snap) snap = app.snap.getCurrent();
-      if(!snap.content.html()) return false;
+      if(!snap.content) return false;
       // stop all the video and audio in the content
-      snap.content.find('video,audio').each(function(){
+      $(snap.content).find('video,audio').each(function(){
         var media = $(this);
         media.animate({volume: 0}, 500, function(){
           media.get(0).pause();
@@ -146,7 +183,7 @@ app.snap = {
       //   }
       // });
       $('.snap-content').on('mousedown', function(event){
-        // if(!$(this).hasClass('snap')) return;
+        if(!app.started) return;
         app.touchX = event.clientX;
         app.touchY = event.clientY;
       })
@@ -159,7 +196,7 @@ app.snap = {
         app.snap.content.swipe(x, y, $(this).scrollTop());
       })
       .on('touchstart', function(event){
-        // if(!$(this).hasClass('snap')) return;
+        if(!app.started) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
       })
@@ -178,21 +215,29 @@ app.snap = {
       if(Math.abs(x) > Math.abs(y)){
         if(x < 0){
           // left swipe
-          if(app.DEBUG) console.log('content swipe left');
-          app.snap.previous();
+          if(x < -Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('content swipe left');
+            app.snap.previous();
+          }
         }else{
           // right swipe
-          if(app.DEBUG) console.log('content swipe right');
-          app.snap.next();
+          if(x > Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('content swipe right');
+            app.snap.next();
+          }
         }
       }else{
         if(y < 0){
           // up swipe
-          if(app.DEBUG) console.log('content swipe up');
-          if(top<2) app.snap.cover.show(true);
+          if(y < -Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('content swipe up');
+            if(top<2) app.snap.cover.show(true);
+          }
         }else{
           // down swipe
-          if(app.DEBUG) console.log('content swipe down');
+          if(y > Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('content swipe down');
+          }
         }
       }
     }
@@ -205,15 +250,15 @@ app.snap = {
   cover: {
     show: function (play) {
       var snap = app.snap.getCurrent();
-      if(!snap.content.html() && snap.cover.hasClass('over')){
-        snap.cover.removeClass('over');
+      if(!snap.content){
+        $(snap.cover).removeClass('over');
         if(play===true) app.snap.play(snap);
       }else{
         app.snap.content.stop(snap);
-        snap.content.stop().animate({
+        $(snap.content).stop().animate({
           scrollTop: 0
         }, 500, function(){
-          snap.cover.removeClass('over');
+          $(snap.cover).removeClass('over');
           if(play===true) app.snap.play(snap);
         });
       }
@@ -221,7 +266,7 @@ app.snap = {
 
     eventListeners: function () {
       $('.snap-cover').on('mousedown', function(event){
-        // if(!$(this).hasClass('snap')) return;
+        if(!app.started) return;
         app.touchX = event.clientX;
         app.touchY = event.clientY;
       })
@@ -234,7 +279,7 @@ app.snap = {
         app.snap.cover.swipe(x, y);
       })
       .on('touchstart', function(event){
-        // if(!$(this).hasClass('snap')) return;
+        if(!app.started) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
       })
@@ -253,21 +298,29 @@ app.snap = {
       if(Math.abs(x) > Math.abs(y)){
         if(x < 0){
           // left swipe
-          if(app.DEBUG) console.log('swipe left');
-          app.snap.previous();
+          if(x < -Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('swipe left');
+            app.snap.previous();
+          }
         }else{
           // right swipe
-          if(app.DEBUG) console.log('swipe right');
-          app.snap.next();
+          if(x > Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('swipe right');
+            app.snap.next();
+          }
         }
       }else{
         if(y < 0){
           // up swipe
-          if(app.DEBUG) console.log('swipe up');
+          if(y < -Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('swipe up');
+          }
         }else{
           // down swipe
-          if(app.DEBUG) console.log('swipe down');
-          app.snap.content.show();
+          if(y > Math.abs(app.swipeThreshold)){
+            if(app.DEBUG) console.log('swipe down');
+            app.snap.content.show();
+          }
         }
       }
     }
