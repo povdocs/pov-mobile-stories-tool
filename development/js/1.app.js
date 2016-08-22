@@ -32,7 +32,7 @@ var app = {
           if(d.cover.video) app.addAssetManager('video', d.cover.video);
         }
         if(d.content){
-          if(d.content.type=='video') app.addAssetManager('video', d.content.src);
+          // if(d.content.type=='video') app.addAssetManager('video', d.content.src);
         }
         if(i==l-1) callback();
       }
@@ -59,7 +59,7 @@ var app = {
           if(d.cover.video) d.cover.video = assetManager.getAsset(d.cover.video);
         }
         if(d.content){
-          if(d.content.type=='video') d.content.src = assetManager.getAsset(d.content.src);
+          // if(d.content.type=='video') d.content.src = assetManager.getAsset(d.content.src);
         }
       }
       app.start();
@@ -113,6 +113,36 @@ var app = {
       app.snap.next();
     });
 
+    $('video,audio').bind('abort', function(e){
+      console.log(this.currentSrc, 'abort function fired');
+      this.controls = true;
+    }).bind('emptied', function(e){
+      console.log(this.currentSrc, 'emptied function fired');
+      this.controls = true;
+    }).bind('error', function(e){
+      console.log(this.currentSrc, 'error function fired');
+      this.controls = true;
+    }).bind('stalled', function(e){
+      console.log(this.currentSrc, 'stalled function fired');
+      this.controls = true;
+    }).bind('ended', function(e){
+      console.log(this.currentSrc, 'ended function fired');
+      // TODO: show cover
+    }).bind('pause', function(e){
+      console.log(this.currentSrc, 'pause function fired');
+      this.currentTime = 0;
+      this.volume      = 0;
+    }).bind('play', function(e){
+      console.log(this.currentSrc, 'play function fired');
+      this.currentTime = 0;
+      this.volume      = 1;
+    })
+
+    $('.snap-cover video, .snap-cover audio').bind('playing', function(e){
+      console.log(this.currentSrc, 'playing function fired');
+      this.controls = false;
+    });
+
     // navigate using keyboard
     $(document).on('keydown', function(event){
       // left key
@@ -136,18 +166,11 @@ var app = {
 
   stopMedia: function (media) {
     if(!media) return false;
-    $(media).animate({volume: 0}, 500, function(){
-      media.pause();
-      media.currentTime = 0;
-      media.muted       = true;
-    });
+    media.pause();
   },
 
-  playMedia: function (media, sound) {
+  playMedia: function (media) {
     if(!media) return false;
-    media.muted       = (sound===false) ? true : false;
-    media.currentTime = 0;
-    media.volume      = 1;
     media.play();
   },
 

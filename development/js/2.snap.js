@@ -35,8 +35,7 @@ app.snap = {
       video.setAttribute('src', snap.cover.video);
       video.setAttribute('preload', 'metadata');
       video.setAttribute('loop', true);
-      video.setAttribute('muted', true);
-      video.setAttribute('controls', true);
+      video.setAttribute('controls', false);
       video.setAttribute('class', 'snap-cover-video');
       cover.appendChild(video);
       obj.video = video;
@@ -56,7 +55,6 @@ app.snap = {
         audio.setAttribute('src', snap.cover.audio);
         audio.setAttribute('preload', 'metadata');
         audio.setAttribute('loop', true);
-        audio.setAttribute('muted', true);
         audio.setAttribute('controls', false);
         audio.setAttribute('class', 'snap-cover-audio');
         cover.appendChild(audio);
@@ -80,17 +78,15 @@ app.snap = {
         video.setAttribute('src', snap.content.src);
         video.setAttribute('preload', 'metadata');
         video.setAttribute('loop', false);
-        video.setAttribute('muted', false);
         video.setAttribute('controls', true);
         video.setAttribute('class', 'snap-content-video');
         content.appendChild(video);
         obj.contentVideo = video;
       }
       section.appendChild(content);
-      content.addClass(snap.content.type);
       if(snap.content.type){
-        section.addClass('content-more');
-        section.addClass(snap.content.type);
+        $(section).addClass('content-more');
+        $(section).addClass(snap.content.type);
       }
       obj.content = content;
     }
@@ -146,8 +142,8 @@ app.snap = {
 
   play: function (snap) {
     if(!snap) return false;
-    if(snap.video) app.playMedia(snap.video, true);
-    else if(snap.audio) app.playMedia(snap.audio, true);
+    if(snap.video) app.playMedia(snap.video);
+    else if(snap.audio) app.playMedia(snap.audio);
   },
 
   stop: function (snap) {
@@ -162,22 +158,14 @@ app.snap = {
       if(!snap.content) return false;
       $(snap.cover).addClass('over');
       app.snap.stop(snap);
-      if(snap.contentVideo){
-        snap.contentVideo.volume = 1;
-        snap.contentVideo.muted = false;
-        snap.contentVideo.play();
-      }
+      if(snap.contentVideo) snap.contentVideo.play();
     },
     stop: function (snap) {
       if(!snap) snap = app.snap.getCurrent();
       if(!snap.content) return false;
       // stop all the video and audio in the content
       $(snap.content).find('video,audio').each(function(){
-        var media = $(this);
-        media.animate({volume: 0}, 500, function(){
-          media.get(0).pause();
-          media.get(0).currentTime = 0;
-        });
+        this.pause();
       });
     },
 
@@ -188,7 +176,7 @@ app.snap = {
       //   }
       // });
       $('.snap-content').on('mousedown', function(event){
-        if(!app.started) return;
+        if(!app.startedTF) return;
         app.touchX = event.clientX;
         app.touchY = event.clientY;
       })
@@ -201,7 +189,7 @@ app.snap = {
         app.snap.content.swipe(x, y, $(this).scrollTop());
       })
       .on('touchstart', function(event){
-        if(!app.started) return;
+        if(!app.startedTF) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
       })
@@ -271,7 +259,7 @@ app.snap = {
 
     eventListeners: function () {
       $('.snap-cover').on('mousedown', function(event){
-        if(!app.started) return;
+        if(!app.startedTF) return;
         app.touchX = event.clientX;
         app.touchY = event.clientY;
       })
@@ -284,7 +272,7 @@ app.snap = {
         app.snap.cover.swipe(x, y);
       })
       .on('touchstart', function(event){
-        if(!app.started) return;
+        if(!app.startedTF) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
       })
