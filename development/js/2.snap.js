@@ -39,6 +39,8 @@ app.snap = {
         content.append('<video class="snap-content-video" preload="metadata" controls><source src="'+snap.content.src+'" type="video/mp4"></video>');
       }
       content.addClass(snap.content.type);
+      section.addClass('content-more');
+      section.addClass(snap.content.type);
       content.appendTo(section);
     }
     section.appendTo('main');
