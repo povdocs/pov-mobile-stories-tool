@@ -87,6 +87,11 @@ app.snap = {
         obj.contentVideo = video;
       }
       section.appendChild(content);
+      content.addClass(snap.content.type);
+      if(snap.content.type){
+        section.addClass('content-more');
+        section.addClass(snap.content.type);
+      }
       obj.content = content;
     }
     main.appendChild(section);
