@@ -1,21 +1,23 @@
 var assetManager = new AssetManager();
 
 var app = {
-  DEBUG:         true,
-  snapFile:      'assets/snap.json',
-  touchX:        null,
-  touchY:        null,
-  currentScroll: 0,
-  currentSnap:   0,
-  assets:        [],
-  allAssets:     [],
-  data:          [],
-  snaps:         [],
-  startedTF:     false,
-  loadedTF:      false,
-  title:         document.title,
-  width:         $('main').width(),
-  swipeThreshold: 6,
+  DEBUG:           true,
+  snapFile:        'assets/snap.json',
+  touchX:          null,
+  touchY:          null,
+  currentScroll:   0,
+  currentSnap:     0,
+  assets:          [],
+  allAssets:       [],
+  data:            [],
+  snaps:           [],
+  startedTF:       false,
+  loadedTF:        false,
+  title:           document.title,
+  width:           $('main').width(),
+  swipeThreshold:  6,
+  cacheCover:      true,
+  casheContent:    true,
 
   init: function () {
     app.readFile(app.downloadAssets);
@@ -26,13 +28,13 @@ var app = {
       app.data = data;
       for (var i = 0, d = null, l = data.length; i < l; i++) {
         d = data[i];
-        if(d.cover){
+        if(d.cover && app.cacheCover){
           if(d.cover.image) app.addAssetManager('image', d.cover.image);
           if(d.cover.audio) app.addAssetManager('audio', d.cover.audio);
           if(d.cover.video) app.addAssetManager('video', d.cover.video);
         }
-        if(d.content){
-          // if(d.content.type=='video') app.addAssetManager('video', d.content.src);
+        if(d.content && app.casheContent){
+          if(d.content.type=='video') app.addAssetManager('video', d.content.src);
         }
         if(i==l-1) callback();
       }
@@ -54,12 +56,12 @@ var app = {
     assetManager.constructor(app.allAssets, function(){
       for (var i = 0, d = null, l = app.data.length; i < l; i++) {
         d = app.data[i];
-        if(d.cover){
+        if(d.cover && app.cacheCover){
           if(d.cover.audio) d.cover.audio = assetManager.getAsset(d.cover.audio);
           if(d.cover.video) d.cover.video = assetManager.getAsset(d.cover.video);
         }
-        if(d.content){
-          // if(d.content.type=='video') d.content.src = assetManager.getAsset(d.content.src);
+        if(d.content && app.casheContent){
+          if(d.content.type=='video') d.content.src = assetManager.getAsset(d.content.src);
         }
       }
       app.start();
@@ -106,8 +108,9 @@ var app = {
         app.startedTF = true;
         for (var i = 0, snap = null, l = app.snaps.length; i < l; i++) {
           snap = app.snaps[i];
-          if(snap.video) app.preload(snap.video[0]);
-          if(snap.audio) app.preload(snap.audio[0]);
+          if(snap.video) app.preload(snap.video);
+          if(snap.audio) app.preload(snap.audio);
+          if(snap.contentVideo) app.preload(snap.contentVideo);
         }
       }
       app.snap.next();
@@ -127,20 +130,16 @@ var app = {
       this.controls = true;
     }).bind('ended', function(e){
       console.log(this.currentSrc, 'ended function fired');
-      // TODO: show cover
+      if(!this.loop) this.controls = true;
     }).bind('pause', function(e){
       console.log(this.currentSrc, 'pause function fired');
-      this.currentTime = 0;
       this.volume      = 0;
     }).bind('play', function(e){
       console.log(this.currentSrc, 'play function fired');
-      this.currentTime = 0;
       this.volume      = 1;
-    })
-
-    $('.snap-cover video, .snap-cover audio').bind('playing', function(e){
+    }).bind('playing', function(e){
       console.log(this.currentSrc, 'playing function fired');
-      this.controls = false;
+      if($(this).parent().hasClass('snap-cover')) this.controls = false;
     });
 
     // navigate using keyboard
@@ -171,22 +170,16 @@ var app = {
 
   playMedia: function (media) {
     if(!media) return false;
+    media.currentTime = 0;
     media.play();
   },
 
   preload: function (media) {
     if(!media) return false;
-    $(media).bind('canplaythrough', function(){
-      $(media).get(0).play();
-    });
-    $(media).bind('progress', function(e) {
-      // console.log(this.duration, this.buffered);
-      if(this.duration>0) console.log($(this).get(0).currentSrc, 'Buffered: '+this.buffered.end(0)+'s');
-    });
-    $(media).get(0).volume = 0;
-    // $(media).get(0).load();
-    // $(media).get(0).play();
-    // $(media).get(0).pause();
+    media.load();
+    media.play();
+    media.pause();
+    media.currentTime = 0;
   },
 
   toggleFullScreen: function () {

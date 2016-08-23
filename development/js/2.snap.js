@@ -158,23 +158,18 @@ app.snap = {
       if(!snap.content) return false;
       $(snap.cover).addClass('over');
       app.snap.stop(snap);
-      if(snap.contentVideo) snap.contentVideo.play();
+      if(snap.contentVideo) app.playMedia(snap.contentVideo);
     },
     stop: function (snap) {
       if(!snap) snap = app.snap.getCurrent();
       if(!snap.content) return false;
       // stop all the video and audio in the content
       $(snap.content).find('video,audio').each(function(){
-        this.pause();
+        app.stopMedia(this);
       });
     },
 
     eventListeners: function () {
-      // $('.snap-content').on('scroll', function(event){
-      //   if($(this).scrollTop()<1){
-      //     app.snap.cover.show();
-      //   }
-      // });
       $('.snap-content').on('mousedown', function(event){
         if(!app.startedTF) return;
         app.touchX = event.clientX;
