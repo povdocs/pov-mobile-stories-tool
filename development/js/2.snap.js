@@ -16,7 +16,7 @@ app.snap = {
       content: null,
       contentVideo: null
     };
-    if(i==0){
+    if(i===0){
       section = document.createElement('section');
       section.setAttribute('class', 'intro');
     }else{
@@ -73,15 +73,15 @@ app.snap = {
         content.innerHTML = snap.content.src;
       }
       if(snap.content.type=='video'){
-        var video = document.createElement('video');
-        video.setAttribute('webkit-playsinline', true);
-        video.setAttribute('src', snap.content.src);
-        video.setAttribute('preload', 'metadata');
-        video.setAttribute('loop', false);
-        video.setAttribute('controls', true);
-        video.setAttribute('class', 'snap-content-video');
-        content.appendChild(video);
-        obj.contentVideo = video;
+        var contentVideo = document.createElement('video');
+        contentVideo.setAttribute('webkit-playsinline', true);
+        contentVideo.setAttribute('src', snap.content.src);
+        contentVideo.setAttribute('preload', 'metadata');
+        contentVideo.setAttribute('loop', false);
+        contentVideo.setAttribute('controls', true);
+        contentVideo.setAttribute('class', 'snap-content-video');
+        content.appendChild(contentVideo);
+        obj.contentVideo = contentVideo;
       }
       section.appendChild(content);
       if(snap.content.type){

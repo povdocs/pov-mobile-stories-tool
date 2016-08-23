@@ -39,7 +39,7 @@ function createCORSRequest(method, url) {
  * This code is heavily modified from orignal source to expend from just managing image to managing video and audio.
  */
 function AssetManager() {
-  this.DEBUG = true;
+  this.DEBUG = false;
   this.successCount = 0;
   this.errorCount = 0;
   this.cache = {};
@@ -49,7 +49,7 @@ function AssetManager() {
 
 AssetManager.prototype.queueDownload = function(path) {
   this.downloadQueue.push(path);
-}
+};
 
 AssetManager.prototype.constructor = function(queue, downloadCallback) {
   if(typeof queue!=="undefined") this.downloadQueue = queue;
@@ -80,7 +80,7 @@ AssetManager.prototype.constructor = function(queue, downloadCallback) {
     }
     else continue;
   }
-}
+};
 
 AssetManager.prototype.downloadImage = function(path, downloadCallback){
   var image      = new Image();
@@ -99,7 +99,7 @@ AssetManager.prototype.downloadImage = function(path, downloadCallback){
     parentThis.errorCount += 1;
   }, false);
   image.src = path;
-}
+};
 
 AssetManager.prototype.downloadAudio = function(path, downloadCallback){
   var audio      = new Audio();
@@ -125,7 +125,7 @@ AssetManager.prototype.downloadAudio = function(path, downloadCallback){
     parentThis.errorCount += 1;
   }, false);
   xhr.send();
-}
+};
 
 AssetManager.prototype.downloadVideo = function(path, downloadCallback){
   var video      = null;
@@ -150,11 +150,11 @@ AssetManager.prototype.downloadVideo = function(path, downloadCallback){
     parentThis.errorCount += 1;
   }, false);
 	xhr.send();
-}
+};
 
 AssetManager.prototype.isDone = function() {
   return (this.progress()<100) ? false : true;
-}
+};
 
 AssetManager.prototype.progress = function() {
   var progress = 0;
@@ -168,12 +168,12 @@ AssetManager.prototype.progress = function() {
   }
 
   return Math.round((progress / total) * 100);
-}
+};
 
 AssetManager.prototype.getAsset = function(path) {
   if(!this.cache.hasOwnProperty(path)) return path;
   else return this.cache[path];
-}
+};
 
 AssetManager.prototype.updateProgress = function(path, oEvent) {
   if (oEvent.lengthComputable) {
@@ -181,7 +181,8 @@ AssetManager.prototype.updateProgress = function(path, oEvent) {
     if(parentThis.DEBUG) console.log(path, percentComplete);
   } else {
   }
-}
+};
+
 AssetManager.prototype.progressCount = function(path, loaded, total){
   this.inQueue[path] = {progress: event.loaded, total: event.total};
-}
+};

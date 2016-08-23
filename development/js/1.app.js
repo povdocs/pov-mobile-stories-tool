@@ -1,8 +1,7 @@
-var assetManager = new AssetManager();
-
 var app = {
-  DEBUG:           true,
+  DEBUG:           false,
   snapFile:        'assets/snap.json',
+  assetManager:    new AssetManager(),
   touchX:          null,
   touchY:          null,
   currentScroll:   0,
@@ -20,6 +19,7 @@ var app = {
   casheContent:    true,
 
   init: function () {
+    app.assetManager.DEBUG = app.DEBUG;
     app.readFile(app.downloadAssets);
   },
 
@@ -53,15 +53,15 @@ var app = {
 
   downloadAssets: function (){
 
-    assetManager.constructor(app.allAssets, function(){
+    app.assetManager.constructor(app.allAssets, function(){
       for (var i = 0, d = null, l = app.data.length; i < l; i++) {
         d = app.data[i];
         if(d.cover && app.cacheCover){
-          if(d.cover.audio) d.cover.audio = assetManager.getAsset(d.cover.audio);
-          if(d.cover.video) d.cover.video = assetManager.getAsset(d.cover.video);
+          if(d.cover.audio) d.cover.audio = app.assetManager.getAsset(d.cover.audio);
+          if(d.cover.video) d.cover.video = app.assetManager.getAsset(d.cover.video);
         }
         if(d.content && app.casheContent){
-          if(d.content.type=='video') d.content.src = assetManager.getAsset(d.content.src);
+          if(d.content.type=='video') d.content.src = app.assetManager.getAsset(d.content.src);
         }
       }
       app.start();
@@ -70,7 +70,7 @@ var app = {
 
     // update progress bar on screen
     var progressState = setInterval(function() {
-      var progress = assetManager.progress();
+      var progress = app.assetManager.progress();
       if (progress<100) {
         $('#progress-bar').css({'width': progress+'%'});
         document.title = progress+'% | '+app.title;
