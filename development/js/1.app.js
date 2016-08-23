@@ -117,28 +117,28 @@ var app = {
     });
 
     $('video,audio').bind('abort', function(e){
-      console.log(this.currentSrc, 'abort function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'abort function fired');
       this.controls = true;
     }).bind('emptied', function(e){
-      console.log(this.currentSrc, 'emptied function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'emptied function fired');
       this.controls = true;
     }).bind('error', function(e){
-      console.log(this.currentSrc, 'error function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'error function fired');
       this.controls = true;
     }).bind('stalled', function(e){
-      console.log(this.currentSrc, 'stalled function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'stalled function fired');
       this.controls = true;
     }).bind('ended', function(e){
-      console.log(this.currentSrc, 'ended function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'ended function fired');
       if(!this.loop) this.controls = true;
     }).bind('pause', function(e){
-      console.log(this.currentSrc, 'pause function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'pause function fired');
       this.volume      = 0;
     }).bind('play', function(e){
-      console.log(this.currentSrc, 'play function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'play function fired');
       this.volume      = 1;
     }).bind('playing', function(e){
-      console.log(this.currentSrc, 'playing function fired');
+      if(app.DEBUG) console.log(this.currentSrc, 'playing function fired');
       if($(this).parent().hasClass('snap-cover')) this.controls = false;
     });
 
