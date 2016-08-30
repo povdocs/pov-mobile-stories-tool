@@ -121,8 +121,7 @@ gulp.task('json', function() {
 // Plugin - Copy static assets from development to production
 gulp.task('plugins', function() {
   var sources = [
-    'node_modules/jquery/jquery.min.*',
-    'node_modules/jquery/jquery-migrate.min.*',
+    'node_modules/jquery/dist/jquery.min.*',
     devDir+'/assets/*.js'
   ];
 
@@ -162,6 +161,6 @@ gulp.task('sass', function() {
     .pipe(cssnano())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(assetDir))
-    .pipe(browserSync.reload({ stream: true }))
+    .pipe(browserSync.stream())
   ;
 });

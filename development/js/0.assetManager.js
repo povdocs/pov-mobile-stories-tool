@@ -95,8 +95,9 @@ AssetManager.prototype.downloadImage = function(path, downloadCallback){
     if(parentThis.DEBUG) console.log("IMAGE DOWNLOADED: ", path);
     downloadCallback(path, image);
   }, false);
-  image.addEventListener("error", function() {
+  image.addEventListener("error", function(e) {
     parentThis.errorCount += 1;
+    if(parentThis.DEBUG) console.error("ERROR DOWNLOADING IMAGE: ", path, e);
   }, false);
   image.src = path;
 };
@@ -121,8 +122,9 @@ AssetManager.prototype.downloadAudio = function(path, downloadCallback){
     audio = window.URL.createObjectURL(this.response);
     downloadCallback(path, audio);
   }, false);
-  xhr.addEventListener("error", function() {
+  xhr.addEventListener("error", function(e) {
     parentThis.errorCount += 1;
+    if(parentThis.DEBUG) console.error("ERROR DOWNLOADING AUDIO: ", path, e);
   }, false);
   xhr.send();
 };
@@ -146,8 +148,9 @@ AssetManager.prototype.downloadVideo = function(path, downloadCallback){
 		video = window.URL.createObjectURL(this.response);
     downloadCallback(path, video);
 	}, false);
-  xhr.addEventListener("error", function() {
+  xhr.addEventListener("error", function(e) {
     parentThis.errorCount += 1;
+    if(parentThis.DEBUG) console.error("ERROR DOWNLOADING VIDEO: ", path, e);
   }, false);
 	xhr.send();
 };

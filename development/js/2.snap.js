@@ -65,8 +65,8 @@ app.snap = {
     obj.cover = cover;
 
     // content
-    if(i>0){
-      var content = document.createElement('div');
+    if(i>0 && (snap.content.type!=='' || snap.content.src!=='')){
+      var content = document.createElement('article');
       content.setAttribute('class', 'snap-content '+snap.content.type);
       // add html content to snap
       if(snap.content.type=='html'){
@@ -155,7 +155,7 @@ app.snap = {
   content: {
     show: function () {
       var snap = app.snap.getCurrent();
-      if(!snap.content) return false;
+      if(!snap.content || $(snap.cover).hasClass('over')) return false;
       $(snap.cover).addClass('over');
       app.snap.stop(snap);
       if(snap.contentVideo) app.playMedia(snap.contentVideo);
@@ -238,6 +238,7 @@ app.snap = {
   cover: {
     show: function (play) {
       var snap = app.snap.getCurrent();
+      if(!$(snap.cover).hasClass('over')) return;
       if(!snap.content){
         $(snap.cover).removeClass('over');
         if(play===true) app.snap.play(snap);
