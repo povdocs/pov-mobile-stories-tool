@@ -31,6 +31,7 @@ app.snap = {
     // add cover content
     if(snap.cover.video){
       var video = document.createElement('video');
+      video.setAttribute('playsinline', true);
       video.setAttribute('webkit-playsinline', true);
       video.setAttribute('src', snap.cover.video);
       video.setAttribute('preload', 'metadata');
@@ -74,6 +75,7 @@ app.snap = {
       }
       if(snap.content.type=='video'){
         var contentVideo = document.createElement('video');
+        contentVideo.setAttribute('playsinline', true);
         contentVideo.setAttribute('webkit-playsinline', true);
         contentVideo.setAttribute('src', snap.content.src);
         contentVideo.setAttribute('preload', 'metadata');

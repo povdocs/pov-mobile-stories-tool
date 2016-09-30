@@ -62,9 +62,17 @@ audio{
 video{
   display: block;
   width: 100%;
+  touch-action: none;
 }
 canvas{
   display: block;
   width: 100%;
   height: 100%;
+}
+
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button {
+  opacity: 0;
+  pointer-events: none;
+  width: 5px;
 }
