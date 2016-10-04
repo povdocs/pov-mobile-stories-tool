@@ -21,6 +21,15 @@ var app = {
   init: function () {
     app.assetManager.DEBUG = app.DEBUG;
     app.readFile(app.downloadAssets);
+    if(window.ui){
+      var os = window.ui.os.replace(/\s/g, "");
+      $('body').addClass(os.toLowerCase());
+      $('body').addClass(window.ui.browser.toLowerCase());
+    }
+
+    if(("standalone" in window.navigator) && window.navigator.standalone){
+      $('body').addClass('fullscreen');
+    }
   },
 
   readFile: function(callback){
@@ -101,8 +110,7 @@ var app = {
 
   eventListener: function () {
     // start snap story
-    $('#snap0,.intro').on('click', function () {
-      if(app.DEBUG) console.log('intro click.');
+    $('#intro-play').on('click', function () {
       if(!app.startedTF){
         app.toggleFullScreen();
         app.startedTF = true;
@@ -137,6 +145,9 @@ var app = {
     }).bind('play', function(e){
       if(app.DEBUG) console.log(this.currentSrc, 'play function fired');
       this.volume      = 1;
+      if(this.tagName && this.tagName==="VIDEO" && $('body').hasClass('safari') && $('body').hasClass('ios')){
+        $(this).attr('style', 'height: '+$('main').height()+'px');
+      }
     }).bind('playing', function(e){
       if(app.DEBUG) console.log(this.currentSrc, 'playing function fired');
       if($(this).parent().hasClass('snap-cover')) this.controls = false;
@@ -184,7 +195,7 @@ var app = {
 
   toggleFullScreen: function () {
     var docEl = document.documentElement;
-    if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {
+    if(!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
            if(docEl.requestFullscreen)       { docEl.requestFullscreen(); }
       else if(docEl.msRequestFullscreen)     { docEl.msRequestFullscreen(); }
       else if(docEl.mozRequestFullScreen)    { docEl.mozRequestFullScreen(); }

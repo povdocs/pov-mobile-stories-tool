@@ -2,11 +2,8 @@
 @import 'typebase';
 @import 'base';
 
-section:nth-child(odd){
-  background-color: #FFFC00;
-}
-section:nth-child(even){
-  background-color: #fff;
+section{
+  background-color: #000;
 }
 #video{
   display: none;
@@ -17,6 +14,8 @@ section:nth-child(even){
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-image: url('media/1.jpg');
+  background-size: cover;
   button{
     display: none;
     border: 2px solid #000;
@@ -49,6 +48,9 @@ section:nth-child(even){
     &:not(.video){
       padding: 1rem;
     }
+    &.html{
+      background-color: #fff;
+    }
   }
 }
 
@@ -57,18 +59,18 @@ section:nth-child(even){
     &::before,
     &::after{
       position: absolute;
-      bottom: 0;
+      bottom: 15px;
       left: 50%;
       transform: translate(-50%, 0%);
       text-shadow: 0 0 10px #000;
       color: #fff;
       text-align: center;
-      width: 60px;
+      width: 75px;
       font-size: 1.1rem;
     }
     &::before{
       content: "⌃";
-      bottom: 15px;
+      bottom: 25px;
     }
   }
   &.video{
@@ -93,5 +95,44 @@ section:nth-child(even){
     width: 0%;
     margin: 1rem 0;
     background-color: #000;
+  }
+}
+
+.intro{
+  background-color: #FFC107;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('media/1.jpg');
+  background-size: cover;
+
+  &-pov-logo{
+    max-width: 200px;
+    margin-bottom: 2rem;
+  }
+
+  &-title{
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0 auto 1rem;
+    line-height: 1.5rem;
+  }
+
+  &-play-btn{
+    border: none;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 1rem;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 2px;
+    font-size: 0.9em;
+    background-color: #FFEB3B;
+    color: #000;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.2s;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   }
 }

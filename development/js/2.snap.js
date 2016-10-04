@@ -16,81 +16,105 @@ app.snap = {
       content: null,
       contentVideo: null
     };
-    if(i===0){
-      section = document.createElement('section');
-      section.setAttribute('class', 'intro');
-    }else{
-      section = document.createElement('section');
-      section.setAttribute('class', 'snap');
-    }
+    section = document.createElement('section');
+    section.setAttribute('class', (i===0) ? 'intro' : 'snap');
     section.setAttribute('id', 'snap'+i);
 
-    // cover
-    var cover = document.createElement('div');
-    cover.setAttribute('class', 'snap-cover');
-    // add cover content
-    if(snap.cover.video){
-      var video = document.createElement('video');
-      video.setAttribute('playsinline', true);
-      video.setAttribute('webkit-playsinline', true);
-      video.setAttribute('src', snap.cover.video);
-      video.setAttribute('preload', 'metadata');
-      video.setAttribute('loop', true);
-      video.setAttribute('controls', false);
-      video.setAttribute('class', 'snap-cover-video');
-      cover.appendChild(video);
-      obj.video = video;
-    }else{
-      if(snap.cover.image){
-        var image = document.createElement('img');
-        image.setAttribute('src', snap.cover.image);
-        image.setAttribute('alt', '');
-        image.setAttribute('width', '100%');
-        image.setAttribute('height', '');
-        image.setAttribute('class', 'snap-cover-image');
-        cover.appendChild(image);
-        obj.image = image;
-      }
-      if(snap.cover.audio){
-        var audio = document.createElement('audio');
-        audio.setAttribute('src', snap.cover.audio);
-        audio.setAttribute('preload', 'metadata');
-        audio.setAttribute('loop', true);
-        audio.setAttribute('controls', false);
-        audio.setAttribute('class', 'snap-cover-audio');
-        cover.appendChild(audio);
-        obj.audio = audio;
-      }
-    }
-    section.appendChild(cover);
-    obj.cover = cover;
+    if(i===0){
 
-    // content
-    if(i>0 && (snap.content.type!=='' || snap.content.src!=='')){
-      var content = document.createElement('article');
-      content.setAttribute('class', 'snap-content '+snap.content.type);
-      // add html content to snap
-      if(snap.content.type=='html'){
-        content.innerHTML = snap.content.src;
+      if(snap.cover.image){
+        section.setAttribute('style', "background-image: url('"+snap.cover.image+"')");
+      }else{
+        var povLogo = document.createElement('img');
+        povLogo.setAttribute('src', 'assets/media/pov-logo-web-transparent-bg-white-text.svg');
+        povLogo.setAttribute('alt', 'POV Logo');
+        povLogo.setAttribute('width', '200');
+        povLogo.setAttribute('height', 'auto');
+        povLogo.setAttribute('class', 'intro-pov-logo');
+
+        var title = document.createElement('h1');
+        title.setAttribute('class', 'intro-title');
+        title.innerHTML = "Mobile Story Telling";
+
+        section.appendChild(povLogo);
+        section.appendChild(title);
       }
-      if(snap.content.type=='video'){
-        var contentVideo = document.createElement('video');
-        contentVideo.setAttribute('playsinline', true);
-        contentVideo.setAttribute('webkit-playsinline', true);
-        contentVideo.setAttribute('src', snap.content.src);
-        contentVideo.setAttribute('preload', 'metadata');
-        contentVideo.setAttribute('loop', false);
-        contentVideo.setAttribute('controls', true);
-        contentVideo.setAttribute('class', 'snap-content-video');
-        content.appendChild(contentVideo);
-        obj.contentVideo = contentVideo;
+      var playButton = document.createElement('button');
+      playButton.setAttribute('type', 'button');
+      playButton.setAttribute('id', 'intro-play');
+      playButton.setAttribute('class', 'intro-play-btn');
+      playButton.innerHTML = "Start";
+
+      section.appendChild(playButton);
+    }else{
+
+      // cover
+      var cover = document.createElement('div');
+      cover.setAttribute('class', 'snap-cover');
+      // add cover content
+      if(snap.cover.video){
+        var video = document.createElement('video');
+        video.setAttribute('playsinline', true);
+        video.setAttribute('webkit-playsinline', true);
+        video.setAttribute('src', snap.cover.video);
+        video.setAttribute('preload', 'metadata');
+        video.setAttribute('loop', true);
+        video.setAttribute('controls', false);
+        video.setAttribute('class', 'snap-cover-video');
+        cover.appendChild(video);
+        obj.video = video;
+      }else{
+        if(snap.cover.image){
+          var image = document.createElement('img');
+          image.setAttribute('src', snap.cover.image);
+          image.setAttribute('alt', '');
+          image.setAttribute('width', '100%');
+          image.setAttribute('height', '');
+          image.setAttribute('class', 'snap-cover-image');
+          cover.appendChild(image);
+          obj.image = image;
+        }
+        if(snap.cover.audio){
+          var audio = document.createElement('audio');
+          audio.setAttribute('src', snap.cover.audio);
+          audio.setAttribute('preload', 'metadata');
+          audio.setAttribute('loop', true);
+          audio.setAttribute('controls', false);
+          audio.setAttribute('class', 'snap-cover-audio');
+          cover.appendChild(audio);
+          obj.audio = audio;
+        }
       }
-      section.appendChild(content);
-      if(snap.content.type){
-        $(section).addClass('content-more');
-        $(section).addClass(snap.content.type);
+      section.appendChild(cover);
+      obj.cover = cover;
+
+      // content
+      if(i>0 && snap.content.type!=='' && snap.content.src!==''){
+        var content = document.createElement('article');
+        content.setAttribute('class', 'snap-content '+snap.content.type);
+        // add html content to snap
+        if(snap.content.type=='html'){
+          content.innerHTML = snap.content.src;
+        }
+        if(snap.content.type=='video'){
+          var contentVideo = document.createElement('video');
+          contentVideo.setAttribute('playsinline', true);
+          contentVideo.setAttribute('webkit-playsinline', true);
+          contentVideo.setAttribute('src', snap.content.src);
+          contentVideo.setAttribute('preload', 'metadata');
+          contentVideo.setAttribute('loop', false);
+          contentVideo.setAttribute('controls', true);
+          contentVideo.setAttribute('class', 'snap-content-video');
+          content.appendChild(contentVideo);
+          obj.contentVideo = contentVideo;
+        }
+        section.appendChild(content);
+        if(snap.content.type){
+          $(section).addClass('content-more');
+          $(section).addClass(snap.content.type);
+        }
+        obj.content = content;
       }
-      obj.content = content;
     }
     main.appendChild(section);
     app.snaps.push(obj);
@@ -116,7 +140,7 @@ app.snap = {
       $('main').stop().animate({
         scrollLeft: scroll
       }, 500, function(){
-        var id = scroll/width;
+        var id = (scroll/width);
         app.currentScroll = scroll;
         app.currentSnap   = id;
         app.snap.stop(app.snap.get(id-1));
@@ -133,7 +157,7 @@ app.snap = {
       $('main').stop().animate({
         scrollLeft: scroll
       }, 500, function(){
-        var id = scroll/width;
+        var id = (scroll/width);
         app.currentScroll = scroll;
         app.currentSnap   = id;
         app.snap.stop(app.snap.get(id+1));
