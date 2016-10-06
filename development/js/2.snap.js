@@ -139,7 +139,7 @@ app.snap = {
     if(scroll<=(width*section)){
       $('main').stop().animate({
         scrollLeft: scroll
-      }, 500, function(){
+      }, app.transitionSpeed, function(){
         var id = (scroll/width);
         app.currentScroll = scroll;
         app.currentSnap   = id;
@@ -156,7 +156,7 @@ app.snap = {
     if(scroll>=0){
       $('main').stop().animate({
         scrollLeft: scroll
-      }, 500, function(){
+      }, app.transitionSpeed, function(){
         var id = (scroll/width);
         app.currentScroll = scroll;
         app.currentSnap   = id;
@@ -182,10 +182,15 @@ app.snap = {
     show: function () {
       var snap = app.snap.getCurrent();
       if(!snap.content || $(snap.cover).hasClass('over')) return false;
-      $(snap.cover).addClass('over');
+      $(snap.cover).animate({
+        top: '-110%'
+      }, app.transitionSpeed, function(){
+        $(this).addClass('over');
+      });
       app.snap.stop(snap);
       if(snap.contentVideo) app.playMedia(snap.contentVideo);
     },
+
     stop: function (snap) {
       if(!snap) snap = app.snap.getCurrent();
       if(!snap.content) return false;
@@ -196,30 +201,41 @@ app.snap = {
     },
 
     eventListeners: function () {
-      $('.snap-content').on('mousedown', function(event){
-        if(!app.startedTF) return;
-        app.touchX = event.clientX;
-        app.touchY = event.clientY;
-      })
-      .on('mousemove', function(event){
-        if(!app.touchX || !app.touchY) return;
-        var x      = app.touchX - event.clientX;
-        var y      = app.touchY - event.clientY;
-        app.touchX = null;
-        app.touchY = null;
-        app.snap.content.swipe(x, y, $(this).scrollTop());
-      })
-      .on('touchstart', function(event){
+      $('.snap-content').on('touchstart', function(event){
         if(!app.startedTF) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
+        app.mainScroll = app.getScroll();
       })
       .on('touchmove', function(event){
-        if(!app.touchX || !app.touchY) return;
-        var x      = app.touchX - event.originalEvent.touches[0].clientX;
-        var y      = app.touchY - event.originalEvent.touches[0].clientY;
+        if(!app.touchX && !app.touchY) return;
+        var x = app.touchX - event.originalEvent.touches[0].clientX;
+        var y = app.touchY - event.originalEvent.touches[0].clientY;
+        
+        if(Math.abs(x) > Math.abs(y)){
+          // scroll main as user moves from left to right
+          $('main').scrollLeft(app.getScroll() + x);
+        }else{
+          var snap = app.snap.getCurrent();
+          if(snap.content && $(snap.cover).hasClass('over') && y<0 && $(snap.content).scrollTop()===0){
+            y = ((y + $('main').height())/$('main').height()) * 100;
+            $(snap.cover).css({'top': (y * -1)+'%'});
+          }
+        }
+      })
+      .on('touchend', function(event){
+        if(!app.touchX && !app.touchY) return;
+        var x      = app.touchX - event.originalEvent.changedTouches[0].clientX;
+        var y      = app.touchY - event.originalEvent.changedTouches[0].clientY;
+        console.log(x, y, app.touchX, app.touchY, event.originalEvent.changedTouches[0].clientX, event.originalEvent.changedTouches[0].clientY);
         app.touchX = null;
         app.touchY = null;
+        // reset the main scroll
+        if(Math.abs(x)<app.touchThreshold){
+          $('main').scrollLeft(app.mainScroll);
+        }
+
+        app.mainScroll = null;
         app.snap.content.swipe(x, y, $(this).scrollTop());
       });
     },
@@ -266,50 +282,77 @@ app.snap = {
       var snap = app.snap.getCurrent();
       if(!$(snap.cover).hasClass('over')) return;
       if(!snap.content){
-        $(snap.cover).removeClass('over');
-        if(play===true) app.snap.play(snap);
+        $(snap.cover).removeAttr('style').removeClass('over');
       }else{
+        // stop any media playing in the content
         app.snap.content.stop(snap);
+        // reset content scroll to zero
         $(snap.content).stop().animate({
           scrollTop: 0
-        }, 500, function(){
-          $(snap.cover).removeClass('over');
-          if(play===true) app.snap.play(snap);
+        }, app.transitionSpeed);
+        // bring the cover down
+        $(snap.cover).animate({
+          top: '0%'
+        }, app.transitionSpeed, function(){
+          $(this).removeClass('over').removeAttr('style');
         });
       }
+      console.log('show cover: ',play);
+      if(play===true) app.snap.play(snap);
     },
 
     eventListeners: function () {
-      $('.snap-cover').on('mousedown', function(event){
-        if(!app.startedTF) return;
-        app.touchX = event.clientX;
-        app.touchY = event.clientY;
-      })
-      .on('mousemove', function(event){
-        if(!app.touchX || !app.touchY) return;
-        var x      = app.touchX - event.clientX;
-        var y      = app.touchY - event.clientY;
-        app.touchX = null;
-        app.touchY = null;
-        app.snap.cover.swipe(x, y);
-      })
-      .on('touchstart', function(event){
+      $('.snap-cover').on('touchstart', function(event){
         if(!app.startedTF) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
+        app.mainScroll = app.getScroll();
       })
       .on('touchmove', function(event){
         if(!app.touchX || !app.touchY) return;
-        var x      = app.touchX - event.originalEvent.touches[0].clientX;
-        var y      = app.touchY - event.originalEvent.touches[0].clientY;
+        var x = app.touchX - event.originalEvent.touches[0].clientX;
+        var y = app.touchY - event.originalEvent.touches[0].clientY;
+        
+        if(Math.abs(x) > Math.abs(y)){
+          // scroll main as user moves from left to right
+          $('main').scrollLeft(app.getScroll() + x);
+        }else{
+          var snap = app.snap.getCurrent();
+          if(snap.content && !$(snap.cover).hasClass('over') && y>0){
+            y = (y/$('main').height()) * 100;
+            $(snap.cover).css({'top': (y * -1)+'%'});
+          }
+        }
+        event.preventDefault();
+      })
+      .on('touchend', function(event){
+        if(!app.touchX && !app.touchY) return;
+        var x      = app.touchX - event.originalEvent.changedTouches[0].clientX;
+        var y      = app.touchY - event.originalEvent.changedTouches[0].clientY;
+        console.log(x, y, app.touchX, app.touchY, event.originalEvent.changedTouches[0].clientX, event.originalEvent.changedTouches[0].clientY);
         app.touchX = null;
         app.touchY = null;
+        //
+        if(Math.abs(x)<app.touchThreshold){
+          $('main').scrollLeft(app.mainScroll);
+        }
+        //
+        if(Math.abs(y)<app.touchThreshold){
+          var snap = app.snap.getCurrent();
+          $(snap.cover).animate({
+            top: '0%'
+          }, app.transitionSpeed, function(){
+            $(this).removeAttr('style').removeClass('over');
+          });
+        }
+        app.mainScroll = null;
         app.snap.cover.swipe(x, y);
       });
     },
 
     swipe: function (x, y) {
-      if(!x || !y) return;
+      if(!x && !y) return;
+      console.log(x, y);
       if(Math.abs(x) > Math.abs(y)){
         if(x < 0){
           // left swipe

@@ -17,6 +17,8 @@ var app = {
   swipeThreshold:  6,
   cacheCover:      true,
   casheContent:    true,
+  touchThreshold:  40,
+  transitionSpeed: 600,
 
   init: function () {
     app.assetManager.DEBUG = app.DEBUG;
@@ -109,6 +111,12 @@ var app = {
   },
 
   eventListener: function () {
+
+    $(document).on('touchmove', function(event){
+      var snap = app.snap.getCurrent();
+      if(!$(snap.content).hasClass('html')) event.preventDefault();
+    });
+
     // start snap story
     $('#intro-play').on('click', function () {
       if(!app.startedTF){
@@ -177,11 +185,11 @@ var app = {
   stopMedia: function (media) {
     if(!media) return false;
     media.pause();
+    media.currentTime = 0;
   },
 
   playMedia: function (media) {
     if(!media) return false;
-    media.currentTime = 0;
     media.play();
   },
 

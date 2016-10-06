@@ -33,12 +33,11 @@ section{
     width: 100%;
     height: 100%;
     z-index: 2;
-    transition: all 300ms ease-in-out;
     background-color: #000;
   }
 
   &-cover.over{
-    top: -130%;
+    top: -110%;
   }
   &-content{
     height: 100%;
