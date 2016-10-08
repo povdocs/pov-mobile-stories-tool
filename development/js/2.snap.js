@@ -5,6 +5,46 @@ app.snap = {
     app.snap.content.eventListeners();
   },
 
+  howTo: function(){
+    var main = document.getElementById('main');
+    var section = document.createElement('div');
+    section.setAttribute('class', 'how-to');
+    section.setAttribute('id', 'how-to');
+
+    var close = document.createElement('div');
+    close.setAttribute('id', 'how-to-close');
+    close.setAttribute('class', 'how-to-close');
+
+
+    var howTo = document.createElement('img');
+    howTo.setAttribute('class', 'how-to-image');
+    howTo.setAttribute('src', 'assets/media/mobile-storytelling-how-to.svg');
+    howTo.setAttribute('alt', "Mobile Storytelling How To");
+    howTo.setAttribute('width', "200");
+    howTo.setAttribute('height', "auto");
+
+
+    section.appendChild(close);
+
+    if('ui' in window && window.ui){
+      var message = document.createElement('div');
+      message.setAttribute('class', 'how-to-message');
+      if(window.ui.os.toLowerCase()=='ios'){
+        if(parseInt(window.ui.osversion)<10){
+          message.innerHTML = app.iosLessThen10;
+          section.appendChild(message);
+        }
+        else if(window.ui.browser.toLowerCase()=='chrome' && parseInt(window.ui.version)<54){
+          message.innerHTML = app.iosChromeLessThen54;
+          section.appendChild(message);
+        }
+      }
+    }
+
+    section.appendChild(howTo);
+    main.appendChild(section);
+  },
+
   create: function (i, snap) {
     var main = document.getElementById('main');
     var section = '';

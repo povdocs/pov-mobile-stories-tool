@@ -19,6 +19,8 @@ var app = {
   casheContent:    true,
   touchThreshold:  40,
   transitionSpeed: 600,
+  iosLessThen10:       "For better experience please view this on iOS 10.",
+  iosChromeLessThen54: "For better experience please view this on Safari in iOS 10.",
 
   init: function () {
     app.assetManager.DEBUG = app.DEBUG;
@@ -32,6 +34,7 @@ var app = {
     if(("standalone" in window.navigator) && window.navigator.standalone){
       $('body').addClass('fullscreen');
     }
+    app.snap.howTo();
   },
 
   readFile: function(callback){
@@ -115,6 +118,14 @@ var app = {
     $(document).on('touchmove', function(event){
       var snap = app.snap.getCurrent();
       if(!$(snap.content).hasClass('html')) event.preventDefault();
+    });
+
+    $('#how-to-close').on('click', function(){
+      $('#how-to').animate({
+        top: '-110%'
+      }, app.transitionSpeed, function(){
+        $(this).hide();
+      });
     });
 
     // start snap story

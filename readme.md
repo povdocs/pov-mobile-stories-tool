@@ -11,12 +11,12 @@
 ### How to Navigate
 * Desktop
   * Right key to go to next snap.
-  * Left key to go back to previews snap.
+  * Left key to go back to previous snap.
   * Down key to go down on the current snap. (This will only work if you see **Watch** or **Read** on cover snap)
   * Up key to go back to cover snap.
 * Mobile or Touch Device
   * Swipe Left to go to next snap.
-  * Swipe Right to go back to previews snap.
+  * Swipe Right to go back to previous snap.
   * Swipe Up to go down on the current snap. (This will only work if you see **Watch** or **Read** on cover snap)
   * Swipe Down key to go back to cover snap.
 
@@ -141,7 +141,7 @@ If you just want to rebuild the project use this commend. This will build the pr
 
 
 ## License
-Original code is made avalable under [License info], Copyright (c) 2016 American Documentary Inc.
+Original code is made available under [License info], Copyright (c) 2016 American Documentary Inc.
 
 ## Author
 Code, concept and design by [Sunil Patel](https://github.com/sunil523), Developer, [POV](http://www.pbs.org/pov/) Digital
