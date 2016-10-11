@@ -1,3 +1,20 @@
+/*!
+Sunil Patel, Developer, POV Digital | github.com/povdocs/pov-mobile-storytelling
+Copyright (C) 2016 POV | American Documentary Inc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 var app = {
   DEBUG:           false,
   snapFile:        'assets/snap.json',
@@ -14,27 +31,40 @@ var app = {
   loadedTF:        false,
   title:           document.title,
   width:           $('main').width(),
+  height:          $('main').height(),
   swipeThreshold:  6,
   cacheCover:      true,
   casheContent:    true,
   touchThreshold:  40,
   transitionSpeed: 600,
+  introLogo:       "assets/media/pov-logo-web-transparent-bg-white-text.svg",
+  introTitle:      "Mobile Story Telling",
   iosLessThen10:       "For better experience please view this on iOS 10.",
   iosChromeLessThen54: "For better experience please view this on Safari in iOS 10.",
 
   init: function () {
     app.assetManager.DEBUG = app.DEBUG;
     app.readFile(app.downloadAssets);
-    if(window.ui){
-      var os = window.ui.os.replace(/\s/g, "");
+
+    if(window.device){
+      var os = window.device.os.replace(/\s/g, "");
       $('body').addClass(os.toLowerCase());
-      $('body').addClass(window.ui.browser.toLowerCase());
+      $('body').addClass(window.device.browser.toLowerCase());
     }
 
     if(("standalone" in window.navigator) && window.navigator.standalone){
       $('body').addClass('fullscreen');
     }
+
     app.snap.howTo();
+
+    $('#how-to-close').on('click', function(){
+      $('#how-to').animate({
+        top: '-110%'
+      }, app.transitionSpeed, function(){
+        $(this).hide();
+      });
+    });
   },
 
   readFile: function(callback){
@@ -118,14 +148,6 @@ var app = {
     $(document).on('touchmove', function(event){
       var snap = app.snap.getCurrent();
       if(!$(snap.content).hasClass('html')) event.preventDefault();
-    });
-
-    $('#how-to-close').on('click', function(){
-      $('#how-to').animate({
-        top: '-110%'
-      }, app.transitionSpeed, function(){
-        $(this).hide();
-      });
     });
 
     // start snap story

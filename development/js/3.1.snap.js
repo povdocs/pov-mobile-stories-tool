@@ -1,3 +1,20 @@
+/*!
+Sunil Patel, Developer, POV Digital | github.com/povdocs/pov-mobile-storytelling
+Copyright (C) 2016 POV | American Documentary Inc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 app.snap = {
 
   init: function () {
@@ -26,15 +43,15 @@ app.snap = {
 
     section.appendChild(close);
 
-    if('ui' in window && window.ui){
+    if('device' in window && window.device){
       var message = document.createElement('div');
       message.setAttribute('class', 'how-to-message');
-      if(window.ui.os.toLowerCase()=='ios'){
-        if(parseInt(window.ui.osversion)<10){
+      if(window.device.os.toLowerCase()=='ios'){
+        if(parseInt(window.device.osversion)<10){
           message.innerHTML = app.iosLessThen10;
           section.appendChild(message);
         }
-        else if(window.ui.browser.toLowerCase()=='chrome' && parseInt(window.ui.version)<54){
+        else if(window.device.browser.toLowerCase()=='chrome' && parseInt(window.device.version)<54){
           message.innerHTML = app.iosChromeLessThen54;
           section.appendChild(message);
         }
@@ -66,7 +83,7 @@ app.snap = {
         section.setAttribute('style', "background-image: url('"+snap.cover.image+"')");
       }else{
         var povLogo = document.createElement('img');
-        povLogo.setAttribute('src', 'assets/media/pov-logo-web-transparent-bg-white-text.svg');
+        povLogo.setAttribute('src', app.introLogo);
         povLogo.setAttribute('alt', 'POV Logo');
         povLogo.setAttribute('width', '200');
         povLogo.setAttribute('height', 'auto');
@@ -74,7 +91,7 @@ app.snap = {
 
         var title = document.createElement('h1');
         title.setAttribute('class', 'intro-title');
-        title.innerHTML = "Mobile Story Telling";
+        title.innerHTML = app.introTitle;
 
         section.appendChild(povLogo);
         section.appendChild(title);

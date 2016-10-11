@@ -1,16 +1,23 @@
-/**
- * Copyright (c) POV | American Documentary
- * Asset Manager code is heavily modified from orignal source to expend from just managing image to managing video and audio.
- *
- * html5rocks.com Copyright (c)
- * Except as otherwise [noted](http://code.google.com/policies.html#restrictions), the content of this page is licensed under the [Creative Commons Attribution 3.0 License](http://creativecommons.org/licenses/by/3.0/), and code samples are licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
- * createCORSRequest is Copyright (c) html5rocks.com (http://www.html5rocks.com/en/tutorials/cors/)
- * Asset Manager is Copyright (c) html5rocks.com (http://www.html5rocks.com/en/tutorials/games/assetmanager/)
- */
+/*!
+Sunil Patel, Developer, POV Digital | github.com/povdocs/pov-mobile-storytelling
+Copyright (C) 2016 POV | American Documentary Inc.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
  * Using CORS
- * source: http://www.html5rocks.com/en/tutorials/cors/
  */
 function createCORSRequest(method, url) {
   var xhr = new XMLHttpRequest();
@@ -32,12 +39,6 @@ function createCORSRequest(method, url) {
   return xhr;
 }
 
-
-/**
- * Simple Asset Management for HTML5 Games
- * Source: http://www.html5rocks.com/en/tutorials/games/assetmanager/
- * This code is heavily modified from orignal source to expend from just managing image to managing video and audio.
- */
 function AssetManager() {
   this.DEBUG = false;
   this.successCount = 0;
@@ -178,11 +179,10 @@ AssetManager.prototype.getAsset = function(path) {
   else return this.cache[path];
 };
 
-AssetManager.prototype.updateProgress = function(path, oEvent) {
-  if (oEvent.lengthComputable) {
-    var percentComplete = oEvent.loaded / oEvent.total;
+AssetManager.prototype.updateProgress = function(path, event) {
+  if (event.lengthComputable) {
+    var percentComplete = event.loaded / event.total;
     if(parentThis.DEBUG) console.log(path, percentComplete);
-  } else {
   }
 };
 

@@ -1,6 +1,7 @@
-# ignore all files and folders
-*
+# ignore all files and folders at root
+/*
 
+ */
 # track this file
 !.gitignore
 !.jshintrc
@@ -11,4 +12,9 @@
 !development/
 !production/
 
+# ignore media files
+*.mp4
+*.mp3
+
+# ignore OS files
 *.DS_Store

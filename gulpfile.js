@@ -145,7 +145,7 @@ gulp.task('js', function() {
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(concat('main.min.js'))
-    .pipe(uglify())
+    .pipe(uglify({preserveComments: 'license'}))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(assetDir))
   ;

@@ -141,7 +141,13 @@ If you just want to rebuild the project use this commend. This will build the pr
 
 
 ## License
-Original code is made available under [GPL-3.0](LICENSE.txt), Copyright (c) 2016 POV | American Documentary Inc.
+Original code is made available under [GPL-3.0](https://opensource.org/licenses/GPL-3.0), Copyright (c) 2016 POV | American Documentary Inc.
+
+### Plugins
+Following plugins are made available under their respective licenses.
+* [Typebase.css](http://devinhunt.github.io/typebase.css/) v0.1.0
+* [Normalize.css](github.com/necolas/normalize.css) v4.1.1
+* [jQuery](jquery.org/license) v3.1.0
 
 ## Author
 Code, concept and design by [Sunil Patel](https://github.com/sunil523), Developer, [POV](http://www.pbs.org/pov/) Digital
