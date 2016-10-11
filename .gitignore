@@ -4,13 +4,11 @@
 # track this file
 !.gitignore
 !.jshintrc
-!*.md
-!*.json
-!*.html
-!*.js
-!development
-!development/*
-!production
-!production/*
+!gulpfile.js
+!LICENSE.txt
+!package.json
+!readme.md
+!development/
+!production/
 
 *.DS_Store

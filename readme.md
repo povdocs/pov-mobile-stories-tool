@@ -141,7 +141,7 @@ If you just want to rebuild the project use this commend. This will build the pr
 
 
 ## License
-Original code is made available under [License info], Copyright (c) 2016 American Documentary Inc.
+Original code is made available under [GPL-3.0](LICENSE.txt), Copyright (c) 2016 POV | American Documentary Inc.
 
 ## Author
 Code, concept and design by [Sunil Patel](https://github.com/sunil523), Developer, [POV](http://www.pbs.org/pov/) Digital
