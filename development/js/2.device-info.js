@@ -130,5 +130,6 @@ window.device = {
   version:   version,
   os:        os,
   osversion: osversion,
-  bit:       bit
+  bit:       bit,
+  platform: platform
 };

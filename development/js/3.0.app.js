@@ -50,6 +50,7 @@ var app = {
       var os = window.device.os.replace(/\s/g, "");
       $('body').addClass(os.toLowerCase());
       $('body').addClass(window.device.browser.toLowerCase());
+      $('body').addClass(window.device.platform.toLowerCase());
     }
 
     if(("standalone" in window.navigator) && window.navigator.standalone){
@@ -186,7 +187,7 @@ var app = {
     }).bind('play', function(e){
       if(app.DEBUG) console.log(this.currentSrc, 'play function fired');
       this.volume      = 1;
-      if(this.tagName && this.tagName==="VIDEO" && $('body').hasClass('safari') && $('body').hasClass('ios')){
+      if(this.tagName && this.tagName==="VIDEO" && $('body').hasClass('iphone') && $('body').hasClass('ios')){
         $(this).attr('style', 'height: '+$('main').height()+'px');
       }
     }).bind('playing', function(e){
