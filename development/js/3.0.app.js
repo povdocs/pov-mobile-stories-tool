@@ -29,6 +29,7 @@ var app = {
   snaps:           [],
   startedTF:       false,
   loadedTF:        false,
+  downloadTF:      false,
   title:           document.title,
   width:           $('main').width(),
   height:          $('main').height(),
@@ -73,6 +74,10 @@ var app = {
       app.data = data;
       for (var i = 0, d = null, l = data.length; i < l; i++) {
         d = data[i];
+        if(i===0 && d.cover){
+          if(!d.cover.image) d.cover.image = 'assets/media/default-intro-cover.jpg';
+          $('#launcher').css({'background-image': "url('"+d.cover.image+"')"});
+        }
         if(d.cover && app.cacheCover){
           if(d.cover.image) app.addAssetManager('image', d.cover.image);
           if(d.cover.audio) app.addAssetManager('audio', d.cover.audio);
@@ -121,6 +126,7 @@ var app = {
         document.title = progress+'% | '+app.title;
       }else{
         clearInterval(progressState);
+        app.downloadTF = true;
         document.title = app.title;
       }
     }, 1000);
@@ -134,7 +140,7 @@ var app = {
       }
     }
     var time = setInterval(function(){
-      if(app.loadedTF){
+      if(app.loadedTF && app.downloadTF){
         $('#launcher').hide();
         app.eventListener();
         app.snap.init();
