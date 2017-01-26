@@ -35,11 +35,12 @@ var app = {
   height:          $('main').height(),
   swipeThreshold:  6,
   cacheCover:      true,
-  casheContent:    true,
+  casheContent:    false,
   touchThreshold:  40,
   transitionSpeed: 600,
   introLogo:       "assets/media/pov-logo-web-transparent-bg-white-text.svg",
   introTitle:      "Mobile Story Telling",
+  defaultIntroImg: "assets/media/default-intro-cover.jpg",
   iosLessThen10:       "For better experience please view this on iOS 10.",
   iosChromeLessThen54: "For better experience please view this on Safari in iOS 10.",
 
@@ -75,7 +76,7 @@ var app = {
       for (var i = 0, d = null, l = data.length; i < l; i++) {
         d = data[i];
         if(i===0 && d.cover){
-          if(!d.cover.image) d.cover.image = 'assets/media/default-intro-cover.jpg';
+          if(!d.cover.image) d.cover.image = app.defaultIntroImg;
           $('#launcher').css({'background-image': "url('"+d.cover.image+"')"});
         }
         if(d.cover && app.cacheCover){

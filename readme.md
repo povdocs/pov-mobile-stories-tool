@@ -1,8 +1,14 @@
 # POV: Mobile Storytelling Tool
 
-[Project Description]
+In 2016, POV produced the first films ever made for [Snapchat Discover](http://www.pbs.org/pov/snapchatfilms/). We searched for tools to help us storyboard, prototype and publish what we made and we couldn't find any — other than private proprietary systems like Snapchat Discover, Instagram Stories and Twitter Moments, so we made our own!
+
+Now we are excited to give the world the ability to pre-edit photos, videos and audio into a mobile-native storytelling tool. You can use it for branching video, dynamic slideshows, one-on-one presentations, or for prototyping stories made for social media apps. POV Mobile Stories is free and provided as open-source software and doesn't depend on a social media app — so you can keep it online as long as you want.
 
 ## Get Started
+
+Visit [stories.org](http://stories.org) to get started.
+
+**OR** 
 
 * Update the `production/assets/snap.json` file. (Look at the `Snap JSON Format` section below to understand how to update this file)
 * After making changes to `snap.json` file. Upload all the files in production folder to your server.
@@ -84,11 +90,14 @@ If you want HTML in content section.
 ```
 
 
-
-
 ## Setup Development Environment
 
-### Markup for Dev Environment
+If you want to make changes to this project you in the right section. Please follow the guide below.
+
+### Project Folder/File Setup
+
+Let's get understand how the development environment is setup.
+
 * **assets**: All the plugins files
 * **js**: All the JavaScript files
 * **json**: json data file
@@ -103,7 +112,7 @@ After you done installing NPM. Open terminal and type:
 ```sh
 sudo npm install -g; sudo npm install -g gulp;
 ```
-This will install the npm and gulp in your computer.
+This will install the npm and gulp in your computer. You can skip this if you already have NPM and Gulp installed.
 
 
 ### Run the Dev Environment
@@ -117,13 +126,13 @@ Run the command below to download all the node modules packages.
   npm install;
 ```
 
-Now everything is downloaded let's tell gulp to start watching development folder. This will build the project from development folder to production folder and option link in browser with broswer-sync.
+Now everything is downloaded let's tell gulp to start watching development folder. This will build the project from development folder to production folder and option link in browser with browser-sync.
 ```sh
   gulp serve;
 ```
 
 
-If you just want to rebuild the project use this commend. This will build the project from development folder to production folder without browser-sync.
+If you just want to rebuild the project use this commend. This will rebuild the project from development folder to production folder without browser-sync.
 ```sh
   gulp build;
 ```
