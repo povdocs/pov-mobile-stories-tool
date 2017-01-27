@@ -10,27 +10,27 @@ Visit [www.pbs.org/pov/stories/](http://www.pbs.org/pov/stories/) to get started
 
 **OR** 
 
-* Update the `production/assets/snap.json` file. (Look at the `Snap JSON Format` section below to understand how to update this file)
-* After making changes to `snap.json` file. Upload all the files in production folder to your server.
+* Update the `production/assets/story.json` file. (Look at the `Story JSON Format` section below to understand how to update this file)
+* After making changes to `story.json` file. Upload all the files in production folder to your server.
 * Navigate where you uploaded the files and you should see project loading on top of your intro image.
 
 ### How to Navigate
 * Desktop
-  * Right key to go to next snap.
-  * Left key to go back to previous snap.
-  * Down key to go down on the current snap. (This will only work if you see **Watch** or **Read** on cover snap)
-  * Up key to go back to cover snap.
+  * Right key to go to next story.
+  * Left key to go back to previous story.
+  * Down key to go down on the current story. (This will only work if you see **Watch** or **Read** on cover story)
+  * Up key to go back to cover story.
 * Mobile or Touch Device
-  * Swipe Left to go to next snap.
-  * Swipe Right to go back to previous snap.
-  * Swipe Up to go down on the current snap. (This will only work if you see **Watch** or **Read** on cover snap)
-  * Swipe Down key to go back to cover snap.
+  * Swipe Left to go to next story.
+  * Swipe Right to go back to previous story.
+  * Swipe Up to go down on the current story. (This will only work if you see **Watch** or **Read** on cover story)
+  * Swipe Down key to go back to cover story.
 
-### Snap JSON Format
+### Story JSON Format
 
-**Intro Snap**
+**Intro Story**
 
-First element in array will be intro snap and it can only be image.
+First element in array will be intro story and it can only be image.
 
 ```json
 [
@@ -43,7 +43,7 @@ First element in array will be intro snap and it can only be image.
 ]
 ```
 
-**Regular Snap:**
+**Regular Story:**
 
 **Note:** For cover you can have video or image with audio but you can't have video and audio files or video and image files.
 
@@ -67,7 +67,7 @@ If you only want video in content section.
 ]
 ```
 
-**Regular Snap:**
+**Regular Story:**
 
 If you want HTML in content section.
 
