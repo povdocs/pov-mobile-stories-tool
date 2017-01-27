@@ -1,4 +1,4 @@
-# POV: Mobile Storytelling Tool
+# POV: Mobile Stories Tool
 
 In 2016, POV produced the first films ever made for [Snapchat Discover](http://www.pbs.org/pov/snapchatfilms/). We searched for tools to help us storyboard, prototype and publish what we made and we couldn't find any — other than private proprietary systems like Snapchat Discover, Instagram Stories and Twitter Moments, so we made our own!
 
@@ -6,7 +6,7 @@ Now we are excited to give the world the ability to pre-edit photos, videos and 
 
 ## Get Started
 
-Visit [stories.org](http://stories.org) to get started.
+Visit [www.pbs.org/pov/stories/](http://www.pbs.org/pov/stories/) to get started.
 
 **OR** 
 

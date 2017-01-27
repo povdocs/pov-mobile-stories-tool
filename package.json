@@ -1,11 +1,11 @@
 {
-  "name": "pov-mobile-storytelling",
-  "version": "0.0.3",
-  "description": "POV Mobile Storytelling Tool",
+  "name": "pov-mobile-stories-tool",
+  "version": "1.0.0",
+  "description": "POV Mobile Stories Tool",
   "main": "gulpfile.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/povdocs/pov-mobile-storytelling.git"
+    "url": "https://github.com/povdocs/pov-mobile-stories-tool.git"
   },
   "author": {
     "name": "sunil523",
@@ -13,9 +13,9 @@
   },
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/povdocs/pov-mobile-storytelling/issues"
+    "url": "https://github.com/povdocs/pov-mobile-stories-tool/issues"
   },
-  "homepage": "http://www.pbs.org/pov/",
+  "homepage": "http://www.pbs.org/pov/stories/",
   "devDependencies": {
     "bourbon": "^4.2.7",
     "browser-sync": "^2.13.0",

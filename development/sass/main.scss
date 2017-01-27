@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   }
 }
 
-.snap{
+.story{
   &-cover{
     position: absolute;
     top: 0;
@@ -69,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 .content-more{
-  .snap-cover{
+  .story-cover{
     &::before,
     &::after{
       position: absolute;
@@ -88,12 +88,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     }
   }
   &.video{
-    .snap-cover::after{
+    .story-cover::after{
       content: "WATCH";
     }
   }
   &.html{
-    .snap-cover::after{
+    .story-cover::after{
       content: "READ";
     }
   }

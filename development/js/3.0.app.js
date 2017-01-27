@@ -17,16 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 var app = {
   DEBUG:           false,
-  snapFile:        'assets/snap.json',
+  storyFile:       'assets/story.json',
   assetManager:    new AssetManager(),
   touchX:          null,
   touchY:          null,
   currentScroll:   0,
-  currentSnap:     0,
+  currentStory:    0,
   assets:          [],
   allAssets:       [],
   data:            [],
-  snaps:           [],
+  stories:         [],
   startedTF:       false,
   loadedTF:        false,
   downloadTF:      false,
@@ -59,7 +59,7 @@ var app = {
       $('body').addClass('fullscreen');
     }
 
-    app.snap.howTo();
+    app.story.howTo();
 
     $('#how-to-close').on('click', function(){
       $('#how-to').animate({
@@ -71,7 +71,7 @@ var app = {
   },
 
   readFile: function(callback){
-    $.getJSON(app.snapFile, function(data){
+    $.getJSON(app.storyFile, function(data){
       app.data = data;
       for (var i = 0, d = null, l = data.length; i < l; i++) {
         d = data[i];
@@ -136,7 +136,7 @@ var app = {
   start: function () {
     if(!app.loadedTF){
       for (var i = 0, l = app.data.length; i < l; i++) {
-        app.snap.create(i, app.data[i]);
+        app.story.create(i, app.data[i]);
         if(i==l-1) app.loadedTF = true;
       }
     }
@@ -144,8 +144,8 @@ var app = {
       if(app.loadedTF && app.downloadTF){
         $('#launcher').hide();
         app.eventListener();
-        app.snap.init();
-        app.snap.play(app.snap.getCurrent());
+        app.story.init();
+        app.story.play(app.story.getCurrent());
         clearInterval(time);
       }
     }, 1000);
@@ -154,23 +154,23 @@ var app = {
   eventListener: function () {
 
     $(document).on('touchmove', function(event){
-      var snap = app.snap.getCurrent();
-      if(!$(snap.content).hasClass('html')) event.preventDefault();
+      var story = app.story.getCurrent();
+      if(!$(story.content).hasClass('html')) event.preventDefault();
     });
 
-    // start snap story
+    // start story story
     $('#intro-play').on('click', function () {
       if(!app.startedTF){
         app.toggleFullScreen();
         app.startedTF = true;
-        for (var i = 0, snap = null, l = app.snaps.length; i < l; i++) {
-          snap = app.snaps[i];
-          if(snap.video) app.preload(snap.video);
-          if(snap.audio) app.preload(snap.audio);
-          if(snap.contentVideo) app.preload(snap.contentVideo);
+        for (var i = 0, story = null, l = app.stories.length; i < l; i++) {
+          story = app.stories[i];
+          if(story.video) app.preload(story.video);
+          if(story.audio) app.preload(story.audio);
+          if(story.contentVideo) app.preload(story.contentVideo);
         }
       }
-      app.snap.next();
+      app.story.next();
     });
 
     $('video,audio').bind('abort', function(e){
@@ -199,19 +199,19 @@ var app = {
       }
     }).bind('playing', function(e){
       if(app.DEBUG) console.log(this.currentSrc, 'playing function fired');
-      if($(this).parent().hasClass('snap-cover')) this.controls = false;
+      if($(this).parent().hasClass('story-cover')) this.controls = false;
     });
 
     // navigate using keyboard
     $(document).on('keydown', function(event){
       // left key
-      if(event.keyCode==37) app.snap.previous();
+      if(event.keyCode==37) app.story.previous();
       // up key
-      else if(event.keyCode==38) app.snap.cover.show(true);
+      else if(event.keyCode==38) app.story.cover.show(true);
       // right key
-      else if(event.keyCode==39) app.snap.next();
+      else if(event.keyCode==39) app.story.next();
       // down key
-      else if(event.keyCode==40) app.snap.content.show();
+      else if(event.keyCode==40) app.story.content.show();
     });
   },
 

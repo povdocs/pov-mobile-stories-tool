@@ -15,11 +15,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-app.snap = {
+app.story = {
 
   init: function () {
-    app.snap.cover.eventListeners();
-    app.snap.content.eventListeners();
+    app.story.cover.eventListeners();
+    app.story.content.eventListeners();
   },
 
   howTo: function(){
@@ -62,7 +62,7 @@ app.snap = {
     main.appendChild(section);
   },
 
-  create: function (i, snap) {
+  create: function (i, story) {
     var main = document.getElementById('main');
     var section = '';
     var obj = {
@@ -74,13 +74,13 @@ app.snap = {
       contentVideo: null
     };
     section = document.createElement('section');
-    section.setAttribute('class', (i===0) ? 'intro' : 'snap');
-    section.setAttribute('id', 'snap'+i);
+    section.setAttribute('class', (i===0) ? 'intro' : 'story');
+    section.setAttribute('id', 'story'+i);
 
     if(i===0){
 
-      if(snap.cover.image){
-        section.setAttribute('style', "background-image: url('"+snap.cover.image+"')");
+      if(story.cover.image){
+        section.setAttribute('style', "background-image: url('"+story.cover.image+"')");
       }else{
         var povLogo = document.createElement('img');
         povLogo.setAttribute('src', app.introLogo);
@@ -107,37 +107,37 @@ app.snap = {
 
       // cover
       var cover = document.createElement('div');
-      cover.setAttribute('class', 'snap-cover');
+      cover.setAttribute('class', 'story-cover');
       // add cover content
-      if(snap.cover.video){
+      if(story.cover.video){
         var video = document.createElement('video');
         video.setAttribute('playsinline', true);
         video.setAttribute('webkit-playsinline', true);
-        video.setAttribute('src', snap.cover.video);
+        video.setAttribute('src', story.cover.video);
         video.setAttribute('preload', 'metadata');
         video.setAttribute('loop', true);
         video.setAttribute('controls', false);
-        video.setAttribute('class', 'snap-cover-video');
+        video.setAttribute('class', 'story-cover-video');
         cover.appendChild(video);
         obj.video = video;
       }else{
-        if(snap.cover.image){
+        if(story.cover.image){
           var image = document.createElement('img');
-          image.setAttribute('src', snap.cover.image);
+          image.setAttribute('src', story.cover.image);
           image.setAttribute('alt', '');
           image.setAttribute('width', '100%');
           image.setAttribute('height', '');
-          image.setAttribute('class', 'snap-cover-image');
+          image.setAttribute('class', 'story-cover-image');
           cover.appendChild(image);
           obj.image = image;
         }
-        if(snap.cover.audio){
+        if(story.cover.audio){
           var audio = document.createElement('audio');
-          audio.setAttribute('src', snap.cover.audio);
+          audio.setAttribute('src', story.cover.audio);
           audio.setAttribute('preload', 'metadata');
           audio.setAttribute('loop', true);
           audio.setAttribute('controls', false);
-          audio.setAttribute('class', 'snap-cover-audio');
+          audio.setAttribute('class', 'story-cover-audio');
           cover.appendChild(audio);
           obj.audio = audio;
         }
@@ -146,62 +146,62 @@ app.snap = {
       obj.cover = cover;
 
       // content
-      if(i>0 && snap.content.type!=='' && snap.content.src!==''){
+      if(i>0 && story.content.type!=='' && story.content.src!==''){
         var content = document.createElement('article');
-        content.setAttribute('class', 'snap-content '+snap.content.type);
-        // add html content to snap
-        if(snap.content.type=='html'){
-          content.innerHTML = snap.content.src;
+        content.setAttribute('class', 'story-content '+story.content.type);
+        // add html content to story
+        if(story.content.type=='html'){
+          content.innerHTML = story.content.src;
         }
-        if(snap.content.type=='video'){
+        if(story.content.type=='video'){
           var contentVideo = document.createElement('video');
           contentVideo.setAttribute('playsinline', true);
           contentVideo.setAttribute('webkit-playsinline', true);
-          contentVideo.setAttribute('src', snap.content.src);
+          contentVideo.setAttribute('src', story.content.src);
           contentVideo.setAttribute('preload', 'metadata');
           contentVideo.setAttribute('loop', false);
           contentVideo.setAttribute('controls', true);
-          contentVideo.setAttribute('class', 'snap-content-video');
+          contentVideo.setAttribute('class', 'story-content-video');
           content.appendChild(contentVideo);
           obj.contentVideo = contentVideo;
         }
         section.appendChild(content);
-        if(snap.content.type){
+        if(story.content.type){
           $(section).addClass('content-more');
-          $(section).addClass(snap.content.type);
+          $(section).addClass(story.content.type);
         }
         obj.content = content;
       }
     }
     main.appendChild(section);
-    app.snaps.push(obj);
+    app.stories.push(obj);
   },
 
   getCurrent: function () {
-    if(app.currentSnap<0) app.currentSnap = 0;
-    return app.snap.get(app.currentSnap);
+    if(app.currentStory<0) app.currentStory = 0;
+    return app.story.get(app.currentStory);
   },
 
   get: function (id) {
-    // change the index and return the snap object
-    if(id<0 || id>app.snaps.length) return null;
-    return app.snaps[id];
+    // change the index and return the story object
+    if(id<0 || id>app.stories.length) return null;
+    return app.stories[id];
   },
 
   next: function () {
     var width   = app.width;
-    var section = $('section.snap').length;
+    var section = $('section.story').length;
     var scroll  = app.getScroll() + width;
-    app.snap.cover.show(false);
+    app.story.cover.show(false);
     if(scroll<=(width*section)){
       $('main').stop().animate({
         scrollLeft: scroll
       }, app.transitionSpeed, function(){
         var id = (scroll/width);
         app.currentScroll = scroll;
-        app.currentSnap   = id;
-        app.snap.stop(app.snap.get(id-1));
-        app.snap.play(app.snap.get(id));
+        app.currentStory   = id;
+        app.story.stop(app.story.get(id-1));
+        app.story.play(app.story.get(id));
       });
     }
   },
@@ -209,56 +209,56 @@ app.snap = {
   previous: function () {
     var width  = app.width;
     var scroll = app.getScroll() - width;
-    app.snap.cover.show(false);
+    app.story.cover.show(false);
     if(scroll>=0){
       $('main').stop().animate({
         scrollLeft: scroll
       }, app.transitionSpeed, function(){
         var id = (scroll/width);
         app.currentScroll = scroll;
-        app.currentSnap   = id;
-        app.snap.stop(app.snap.get(id+1));
-        app.snap.play(app.snap.get(id));
+        app.currentStory   = id;
+        app.story.stop(app.story.get(id+1));
+        app.story.play(app.story.get(id));
       });
     }
   },
 
-  play: function (snap) {
-    if(!snap) return false;
-    if(snap.video) app.playMedia(snap.video);
-    else if(snap.audio) app.playMedia(snap.audio);
+  play: function (story) {
+    if(!story) return false;
+    if(story.video) app.playMedia(story.video);
+    else if(story.audio) app.playMedia(story.audio);
   },
 
-  stop: function (snap) {
-    if(!snap) return false;
-    if(snap.video) app.stopMedia(snap.video);
-    else if(snap.audio) app.stopMedia(snap.audio);
+  stop: function (story) {
+    if(!story) return false;
+    if(story.video) app.stopMedia(story.video);
+    else if(story.audio) app.stopMedia(story.audio);
   },
 
   content: {
     show: function () {
-      var snap = app.snap.getCurrent();
-      if(!snap.content || $(snap.cover).hasClass('over')) return false;
-      $(snap.cover).animate({
+      var story = app.story.getCurrent();
+      if(!story.content || $(story.cover).hasClass('over')) return false;
+      $(story.cover).animate({
         top: '-110%'
       }, app.transitionSpeed, function(){
         $(this).addClass('over');
       });
-      app.snap.stop(snap);
-      if(snap.contentVideo) app.playMedia(snap.contentVideo);
+      app.story.stop(story);
+      if(story.contentVideo) app.playMedia(story.contentVideo);
     },
 
-    stop: function (snap) {
-      if(!snap) snap = app.snap.getCurrent();
-      if(!snap.content) return false;
+    stop: function (story) {
+      if(!story) story = app.story.getCurrent();
+      if(!story.content) return false;
       // stop all the video and audio in the content
-      $(snap.content).find('video,audio').each(function(){
+      $(story.content).find('video,audio').each(function(){
         app.stopMedia(this);
       });
     },
 
     eventListeners: function () {
-      $('.snap-content').on('touchstart', function(event){
+      $('.story-content').on('touchstart', function(event){
         if(!app.startedTF) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
@@ -273,10 +273,10 @@ app.snap = {
           // scroll main as user moves from left to right
           $('main').scrollLeft(app.getScroll() + x);
         }else{
-          var snap = app.snap.getCurrent();
-          if(snap.content && $(snap.cover).hasClass('over') && y<0 && $(snap.content).scrollTop()===0){
+          var story = app.story.getCurrent();
+          if(story.content && $(story.cover).hasClass('over') && y<0 && $(story.content).scrollTop()===0){
             y = ((y + $('main').height())/$('main').height()) * 100;
-            $(snap.cover).css({'top': (y * -1)+'%'});
+            $(story.cover).css({'top': (y * -1)+'%'});
           }
         }
       })
@@ -293,7 +293,7 @@ app.snap = {
         }
 
         app.mainScroll = null;
-        app.snap.content.swipe(x, y, $(this).scrollTop());
+        app.story.content.swipe(x, y, $(this).scrollTop());
       });
     },
 
@@ -304,13 +304,13 @@ app.snap = {
           // left swipe
           if(x < -Math.abs(app.swipeThreshold)){
             if(app.DEBUG) console.log('content swipe left');
-            app.snap.previous();
+            app.story.previous();
           }
         }else{
           // right swipe
           if(x > Math.abs(app.swipeThreshold)){
             if(app.DEBUG) console.log('content swipe right');
-            app.snap.next();
+            app.story.next();
           }
         }
       }else{
@@ -318,7 +318,7 @@ app.snap = {
           // up swipe
           if(y < -Math.abs(app.swipeThreshold)){
             if(app.DEBUG) console.log('content swipe up');
-            if(top<2) app.snap.cover.show(true);
+            if(top<2) app.story.cover.show(true);
           }
         }else{
           // down swipe
@@ -333,33 +333,33 @@ app.snap = {
 
 
 
-  // Cover Snap Functions
+  // Cover story Functions
   cover: {
     show: function (play) {
-      var snap = app.snap.getCurrent();
-      if(!$(snap.cover).hasClass('over')) return;
-      if(!snap.content){
-        $(snap.cover).removeAttr('style').removeClass('over');
+      var story = app.story.getCurrent();
+      if(!$(story.cover).hasClass('over')) return;
+      if(!story.content){
+        $(story.cover).removeAttr('style').removeClass('over');
       }else{
         // stop any media playing in the content
-        app.snap.content.stop(snap);
+        app.story.content.stop(story);
         // reset content scroll to zero
-        $(snap.content).stop().animate({
+        $(story.content).stop().animate({
           scrollTop: 0
         }, app.transitionSpeed);
         // bring the cover down
-        $(snap.cover).animate({
+        $(story.cover).animate({
           top: '0%'
         }, app.transitionSpeed, function(){
           $(this).removeClass('over').removeAttr('style');
         });
       }
       console.log('show cover: ',play);
-      if(play===true) app.snap.play(snap);
+      if(play===true) app.story.play(story);
     },
 
     eventListeners: function () {
-      $('.snap-cover').on('touchstart', function(event){
+      $('.story-cover').on('touchstart', function(event){
         if(!app.startedTF) return;
         app.touchX = event.originalEvent.touches[0].clientX;
         app.touchY = event.originalEvent.touches[0].clientY;
@@ -374,10 +374,10 @@ app.snap = {
           // scroll main as user moves from left to right
           $('main').scrollLeft(app.getScroll() + x);
         }else{
-          var snap = app.snap.getCurrent();
-          if(snap.content && !$(snap.cover).hasClass('over') && y>0){
+          var story = app.story.getCurrent();
+          if(story.content && !$(story.cover).hasClass('over') && y>0){
             y = (y/$('main').height()) * 100;
-            $(snap.cover).css({'top': (y * -1)+'%'});
+            $(story.cover).css({'top': (y * -1)+'%'});
           }
         }
         event.preventDefault();
@@ -395,15 +395,15 @@ app.snap = {
         }
         //
         if(Math.abs(y)<app.touchThreshold){
-          var snap = app.snap.getCurrent();
-          $(snap.cover).animate({
+          var story = app.story.getCurrent();
+          $(story.cover).animate({
             top: '0%'
           }, app.transitionSpeed, function(){
             $(this).removeAttr('style').removeClass('over');
           });
         }
         app.mainScroll = null;
-        app.snap.cover.swipe(x, y);
+        app.story.cover.swipe(x, y);
       });
     },
 
@@ -415,13 +415,13 @@ app.snap = {
           // left swipe
           if(x < -Math.abs(app.swipeThreshold)){
             if(app.DEBUG) console.log('swipe left');
-            app.snap.previous();
+            app.story.previous();
           }
         }else{
           // right swipe
           if(x > Math.abs(app.swipeThreshold)){
             if(app.DEBUG) console.log('swipe right');
-            app.snap.next();
+            app.story.next();
           }
         }
       }else{
@@ -434,7 +434,7 @@ app.snap = {
           // down swipe
           if(y > Math.abs(app.swipeThreshold)){
             if(app.DEBUG) console.log('swipe down');
-            app.snap.content.show();
+            app.story.content.show();
           }
         }
       }
