@@ -106,6 +106,9 @@ gulp.task('pages', function() {
       collapseWhitespace: true,
       removeComments: true,
       removeCommentsFromCDATA: true,
+      minifyJS: true,
+      minifyCSS: true,
+      ignoreCustomComments: [/#/]
     }))
     .pipe(gulp.dest(prodDir))
   ;
